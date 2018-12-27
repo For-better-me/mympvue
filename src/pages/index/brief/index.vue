@@ -16,21 +16,29 @@ export default {
   data () {
     return {
       info:'',
-      img:'/static/img/1.jpg'
+      img:'/static/img/1.jpg',
+      id:''
     }
   },
-
+  onLoad(opt){
+    this.id = opt.tid
+  },
+  mounted(){
+    this.getInfo()
+  },
   components: {
     wxParse
   },
 
   methods: {
-
+    async getInfo(){
+      let self = this;
+      let url = `${this.$api.detail}?tid=${this.id}`;
+      let briefInfo = await this.$http({url}).then((data)=>{return data})
+      console.log(briefInfo)
+    }
   },
-
-  created () {
-   
-  }
+  
 }
 </script>
 

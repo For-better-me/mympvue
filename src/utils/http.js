@@ -1,3 +1,4 @@
+import utils from './index.js'
 let _http = function (opt){//封装请求
     var self = this
     const _promise =  new Promise((resolve,reject) => {
@@ -53,7 +54,7 @@ let _http = function (opt){//封装请求
           // })
         }
         else if(err.code = -1){
-            this.showToast(err.msg)
+            utils.showToast(err.msg)
             console.log('非err10001',err.msg,opt.url)
         }
         return Promise.reject({
