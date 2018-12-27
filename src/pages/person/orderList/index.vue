@@ -1,20 +1,12 @@
 <template>
-  <div class="lease">
-    <div class="lease_list">
-      <ul>
-        <li>
-          <a href="">
-            
-          </a>
-        </li>
-      </ul>
-    </div>
+  <div class="person">
+    <h1>person</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name:'Lease',
+  name:'Person',
   data () {
     return {
     }
@@ -34,5 +26,5 @@ export default {
 </script>
 
 <style scoped lang = 'less'>
-   @import './style'; 
+  @import url('./style');
 </style>

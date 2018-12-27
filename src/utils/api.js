@@ -1,6 +1,6 @@
-let baseUrl = '';
+let baseUrl = 'https://www.99tjit.cn';
 let api = {
-    banner:`token|${baseUrl}/index/index`,//首页banner图
+    banner:`${baseUrl}/api/focus/getFcousList`,//首页banner图
 }
 
 export default {

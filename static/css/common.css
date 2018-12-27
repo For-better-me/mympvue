@@ -1,0 +1,49 @@
+.shadow_wrap {
+  box-shadow: #dcdcdc 0px 0px 40px 3px;
+}
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.video_wrap {
+  width: 6rem;
+  padding: 0.3rem;
+  margin: 0.4rem auto;
+  margin-bottom: 0.35rem;
+  border-radius: 4px;
+}
+.video_wrap h1 {
+  display: inline;
+  font-size: 0.32rem;
+  color: #333;
+  line-height: 0.3rem;
+  margin-bottom: 0.35rem;
+}
+.video_wrap a {
+  float: right;
+  color: #999;
+  font-size: 0.24rem;
+  line-height: 0.6rem;
+}
+.video_wrap h2 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  width: 70%;
+  font-size: 0.28rem;
+  color: #333;
+  line-height: 0.3rem;
+  margin-top: 0.25rem;
+}
+.video_wrap span {
+  float: right;
+  color: #999;
+  font-size: 0.24rem;
+  margin-top: 0.25rem;
+}
+.video_wrap video {
+  width: 100%;
+  height: 3.35rem;
+}

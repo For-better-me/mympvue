@@ -1,0 +1,21 @@
+.home_nav {
+  width: 98%;
+  margin: 0.2rem auto;
+}
+.home_nav ul {
+  font-size: 0;
+}
+.home_nav ul li {
+  width: 20%;
+  display: inline-block;
+  vertical-align: top;
+}
+.home_nav ul li img {
+  width: 100%;
+  height: 30px;
+}
+.home_nav ul li p {
+  font-size: 0.26rem;
+  text-align: center;
+  color: #333;
+}

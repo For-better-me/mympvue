@@ -6,8 +6,10 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
 @import url("../static/css/reset.css");
+@import url("../static/css/common.less");
+
 
 
 </style>
