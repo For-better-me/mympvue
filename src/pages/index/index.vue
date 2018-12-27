@@ -15,10 +15,10 @@
         </ul>
     </div>
     <div class="video_wrap shadow_wrap">
-        <h1>视频</h1>
-        <a href="/pages/index/mediaList/main" @click='moreEvent'>更多</a>
-        <block v-for='(item,i) in navList'>
-            <video :src="item.video" controls objectFit = 'fill' poster = 'item.video_img' v-show='i==navCurrent'></video>
+        <h1>{{title}}</h1>
+        <a :href="moreUrl">更多</a>
+        <block v-for='(item,i) in navList' :key='i'>
+            <video :src="item.video" controls objectFit = 'fill' :poster = 'item.video_img' v-show='i==navCurrent'></video>
         </block>
     </div>
     
@@ -38,15 +38,20 @@ export default {
       duration: 1000,
       navList:[],
       imgUrls: [],
-      navCurrent:0
+      navCurrent:0,
+      title:'视频',
+      moreUrl:''
     }
+  },
+  onLoad(){
+    this.getBanner();
+    this.getNavs();
   },
   created () {
     
   },
   mounted(){
-    this.getBanner();
-    this.getNavs();
+    
   },
   components: {
     Slider2
@@ -76,17 +81,18 @@ export default {
     },
     switchNav(index){
         this.navCurrent = index;
-    },
-    moreEvent(){
-        let index = this.navCurrent;
+        this.title = this.navList[index].title
+        let id = this.navList[index].id
         if(index == 0){
-            wx.navigateTo({url: '/pages/index/brief/main'})
+           this.moreUrl = `/pages/index/brief/main?tid=${id}`
         } else if(index == 4){
-            wx.navigateTo({url: '/pages/index/mediaList/main'})
+           this.moreUrl = `/pages/index/mediaList/main?tid=${id}`
         } else{
-            wx.navigateTo({url: '/pages/lease/order/main'})
+           this.moreUrl = `/pages/lease/order/main?tid=${id}`
         }
-    }
+        console.log(this.moreUrl)
+    },
+   
   },
   
 
