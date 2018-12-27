@@ -31,8 +31,8 @@
     </div>
     <div class="list">
       <ul>
-        <li @click="makePhone">电话咨询</li>
-        <li><a href="/pages/person/about/main">关于新华网媒体创意工厂</a></li>
+        <li @click="makePhone" class="bg_arrow">电话咨询</li>
+        <li class="bg_arrow"><a href="/pages/person/about/main">关于新华网媒体创意工厂</a></li>
       </ul>
     </div>
   </div>
@@ -43,7 +43,7 @@ export default {
   name:'Person',
   data () {
     return {
-      isLogin:false
+      isLogin:true
     }
   },
 
@@ -53,7 +53,7 @@ export default {
   methods: {
     makePhone(){
       wx.makePhoneCall({
-        phoneNumber: '1340000' // 仅为示例，并非真实的电话号码
+        phoneNumber: '18333676885' // 仅为示例，并非真实的电话号码
       })
     }
     

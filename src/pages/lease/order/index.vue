@@ -3,6 +3,17 @@
     <form @submit = "sureOrder">
       <div class="order_time">
         <p>预约时间</p>
+        <view class="section">
+          <view class="section__title">日期选择器</view>
+          <picker
+            mode="date"
+            value="2018-12-12"
+            start="2015-09-01"
+            end="2017-09-01"
+          >
+            <view class="picker">当前选择: {{date}}</view>
+          </picker>
+        </view>
       </div>
       <div class="site">
         <checkbox-group @change="checkboxChange" name="checkgo">

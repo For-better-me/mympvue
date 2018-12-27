@@ -9,7 +9,7 @@
     >
       <block v-for="(item, index) in imgUrls" :key = 'index'>
         <swiper-item>
-          <image :src="item" class="slide-image"/>
+          <image :src="item" class="slide-image" mode = 'widthFix' />
         </swiper-item>
       </block>
     </swiper>
@@ -53,9 +53,9 @@ export default {
 .slider {
     width:100%;
     height: 4rem;
+    overflow: hidden;
   .slide-image{
     width: 100%;
-    height: 4rem;
   }
   
 }

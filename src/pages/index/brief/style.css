@@ -1,0 +1,14 @@
+.brief {
+  padding: 0.2rem 0.4rem;
+}
+.brief .brief_img {
+  border-radius: 4px;
+  padding: 0.13rem;
+}
+.brief .brief_img img {
+  width: 100%;
+  border-radius: 4px;
+}
+.brief .brief_content {
+  margin-top: 0.4rem;
+}

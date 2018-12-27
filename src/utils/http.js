@@ -2,7 +2,7 @@ let _http = function (opt){//封装请求
     var self = this
     const _promise =  new Promise((resolve,reject) => {
       let defaultOpt = {
-          loading: true, // 是否显示Loading提示窗
+          loading: false, // 是否显示Loading提示窗
           method: 'GET', // 请求方法，必须大写！！
           data: {}, // 入参
           header: {
@@ -18,18 +18,18 @@ let _http = function (opt){//封装请求
             data: opt.data,
             header: opt.header,
             success:(res)=>{
-                if(res.code == 10001){
+                if(res.data.code == 10001){
                     reject({
                         code: 10001,
                         msg: opt.url + '接口需要token参数3，但系统中不存在token'
                     })
-                } else if(res.code == 0){
+                } else if(res.data.code == 0){
                     wx.hideLoading()
-                    resolve(res.data)
-                    console.log('请求成功',opt.url,res);
+                    resolve(res.data.data)
+                    console.log('请求成功',opt.url,res.data);
                 } else{
                     wx.hideLoading()
-                    reject(res)
+                    reject(res.data)
                 }
             },
             fail:(res)=>{

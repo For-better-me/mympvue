@@ -2,10 +2,15 @@
   <div class="lease">
     <div class="lease_list">
       <ul>
-        <li>
-          <a href="">
-            
-          </a>
+        <li class="shadow_wrap">
+          <img src="/static/img/2.jpg">
+          <p class="ellipsis">AR演播厅只能AR演播厅只能演播厅时间简史演播厅时间简史</p>
+          <a href="/page/lease/detail/main">立即预约</a>
+        </li>
+        <li class="shadow_wrap">
+          <img src="/static/img/2.jpg">
+          <p class="ellipsis">AR演播厅只能AR演播厅只能演播厅时间简史演播厅时间简史</p>
+          <a href="/page/lease/detail/main">立即预约</a>
         </li>
       </ul>
     </div>
