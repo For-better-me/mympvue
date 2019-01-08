@@ -7,6 +7,14 @@ let api = {
     leaseList:`${baseUrl}/Category/getReserveList`,//租赁预约列表--get
     mediaList:`${baseUrl}/Info/getInfoList`,//创意视频作品列表--get
     navList:`${baseUrl}/Category/getCategoryList`,//首页分类--get
+    token:`${baseUrl}/user/getuserLoginTime`,//验证token--post
+    sms:`${baseUrl}/Sms/getSms`,//短信--get
+    pay:`${baseUrl}/Reserve/reserveFormInfo`,//支付--post
+    showReserveTime:`${baseUrl}/Reserve/showReserveTime`,//获取已预约的时间--post
+    reserveList:`${baseUrl}/Reserve/reserveList`,
+    cancelOrder:`${baseUrl}/Reserve/cancel`,
+    aboutInfo:`${baseUrl}/Category/aboutInfo`
+
 
 }
 

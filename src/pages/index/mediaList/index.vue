@@ -1,14 +1,9 @@
 <template>
   <div class="list">
-        <div class="video_wrap shadow_wrap">
-            <video :src="videoSrc" controls objectFit = 'fill' poster = 'http://bpic.588ku.com/element_pic/17/11/08/f9c4c381c639daeb7c47439d15640445.jpg!/fw/260/quality/90/unsharp/true/compress/true'></video>
-            <h2>视频视频视频视频视频视频视频视频视频视频视频视频视频视频视频</h2>
-            <span>2018-12-25</span>
-        </div>
-        <div class="video_wrap shadow_wrap">
-            <video :src="videoSrc" controls objectFit = 'fill' poster = 'http://bpic.588ku.com/element_pic/17/11/08/f9c4c381c639daeb7c47439d15640445.jpg!/fw/260/quality/90/unsharp/true/compress/true'></video>
-            <h2>视频视频视频视频视频视频视频视频视频视频视频视频视频视频视频</h2>
-            <span>2018-12-25</span>
+        <div class="video_wrap shadow_wrap" v-for="(item,i) in mediaList" :key='i'>
+            <video :src="item.video" controls objectFit = 'fill' :poster = 'item.video_img'></video>
+            <h2>{{item.title}}++{{i}}</h2>
+            <span>{{item.time}}</span>
         </div>
   </div>
 </template>
@@ -18,28 +13,58 @@ export default {
   name:'videoList',
   data () {
     return {
-      videoSrc:'http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400',
-      mediaList:[]
+      mediaList:[],
+      currentPage:1,
+      totalPage:0,
+      tid:''
     }
   },
   components: {  },
   onLoad(opt){
-    this.getMedia(opt.tid)
+    Object.assign(this.$data, this.$options.data())
+  },
+  mounted(){
+    this.tid = this.$root.$mp.query.tid;
+    this.getMedia(this.tid,this.currentPage);
   },
   methods: {
-    async getMedia(tid){
-      let url = `${this.$api.mediaList}?tid=${tid}`;
-      let list  = this.$http({url}).then((data)=>{return data});
-      console.log(1111,list);
+    async getMedia(tid,currentPage){
+      wx.showNavigationBarLoading();
+      wx.setNavigationBarTitle({
+        title: '加载中...'
+      })
+      let mediaList = this.mediaList;
+      let url = `${this.$api.mediaList}?tid=${tid}&page=${currentPage}`;
+      let data  = await this.$http({loading:true,url}).then((data)=>{ 
+        wx.hideNavigationBarLoading();
+        wx.setNavigationBarTitle({
+          title: '创意视频'
+        })
+        return data
+      });
+      mediaList = mediaList.concat(data.list)
+      this.mediaList = mediaList;
+      this.totalPage = data.total_page
     }
   },
-  created () {
-   
-  },
   onPullDownRefresh(){
+    let tid = this.tid;
+    let currentPage = 1;
+    this.currentPage = currentPage;
+    this.mediaList = [];
+    this.getMedia(tid,currentPage);
     console.log('onPullDownRefresh');
   },
   onReachBottom(){
+    let tid = this.tid;
+    let currentPage = this.currentPage+1;
+    if(currentPage<this.totalPage){
+        this.currentPage = currentPage;
+        this.getMedia(tid,currentPage);
+    } else{
+        this.$util.showToast('下面没有了哦~')
+    }
+    
     console.log('onReachBottom');
   }
 }

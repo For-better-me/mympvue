@@ -3,7 +3,7 @@ function formatNumber (n) {
   return str[1] ? str : `0${str}`
 }
 
-export function formatTime (date) {
+function formatTime (date) {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
   const day = date.getDate()
@@ -17,6 +17,15 @@ export function formatTime (date) {
 
   return `${t1} ${t2}`
 }
+function formatDate (date,mark='-') {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  const t1 = [year, month, day].map(formatNumber).join(mark)
+
+  return `${t1}`
+}
 function showToast(tip,icon='none'){
   wx.showToast({
     title: tip,
@@ -24,9 +33,19 @@ function showToast(tip,icon='none'){
     duration: 2000
   })
 }
+function isPhone(tel) {
+  var reg = /^1[2|3|4|5|6|7|8|9]\d{9}$/;
+  if (reg.test(tel)) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 export default {
   formatNumber,
   formatTime,
-  showToast
+  showToast,
+  isPhone,
+  formatDate
 }

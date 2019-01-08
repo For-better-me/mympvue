@@ -1,0 +1,56 @@
+.orders ul {
+  padding: 0.3rem 0.4rem;
+}
+.orders ul li {
+  padding: 0.35rem;
+  overflow: hidden;
+  margin-bottom: 0.3rem;
+}
+.orders ul li h1 {
+  font-size: 0.26rem;
+  color: #333;
+  line-height: 0.64rem;
+  border-bottom: #f2f2f2 solid 0.01rem;
+}
+.orders ul li h1 span {
+  float: right;
+  color: #ff0000;
+  font-size: 0.26rem;
+}
+.orders ul li h4,
+.orders ul li p,
+.orders ul li h5 {
+  font-size: 0.26rem;
+  color: #333;
+  line-height: 0.5rem;
+}
+.orders ul li h4 {
+  margin-top: 0.15rem;
+}
+.orders ul li h5 {
+  margin-top: 0.1rem;
+}
+.orders ul li button {
+  width: 1.5rem;
+  height: 0.62rem;
+  background: #0050a2;
+  font-size: 0.26rem;
+  color: #fff;
+  float: right;
+  border-radius: 3px;
+  margin-top: 0.3rem;
+  line-height: 0.6rem;
+}
+.nodata {
+  text-align: center;
+  margin-top: 2.8rem;
+}
+.nodata img {
+  width: 2rem;
+  height: 2rem;
+}
+.nodata p {
+  font-size: 0.3rem;
+  color: #999;
+  margin-top: 0.6rem;
+}

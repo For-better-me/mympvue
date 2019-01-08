@@ -5,11 +5,10 @@
       :autoplay="autoplay"
       :interval="interval"
       :duration="duration"
-       mode="scaleToFill"
     >
       <block v-for="(item, index) in imgUrls" :key = 'index'>
         <swiper-item>
-          <image :src="item" class="slide-image" mode = 'widthFix' />
+          <image :src="item" class="slide-image" mode = 'scaleToFill' />
         </swiper-item>
       </block>
     </swiper>
@@ -54,8 +53,13 @@ export default {
     width:100%;
     height: 4rem;
     overflow: hidden;
+    margin-bottom: 0.4rem;
   .slide-image{
     width: 100%;
+    height: 4rem;
+  }
+  swiper {
+    height: 4rem;
   }
   
 }

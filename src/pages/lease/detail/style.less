@@ -11,17 +11,24 @@
         border-radius: 3px;
     }
     .sort{
-        margin-top: 0.4rem;
+        margin-top: 0.2rem;
         padding: 0 0.05rem;
         display: flex;
         justify-content: space-between;
         border-bottom: #e6e6e6 solid 1px;
-        padding-bottom: 0.25rem;
         p{
-            font-size: 0.26rem;
-            color: #4c4c4c;
-            position: relative;
-            &.on:after{
+            padding: 0.25rem 0;
+            width: 33.33%;
+            text-align: center;
+            span{
+                position: relative;
+                font-size: 0.26rem;
+                color: #4c4c4c;
+                line-height: 0.55rem;
+                height:55rpx;
+                display:inline-block;
+            }
+            &.on span:after{
                 content:'';
                 display: block;
                 position: absolute;
@@ -33,6 +40,17 @@
                 height: 0.03rem;
                 background: #0050a2;
             };
+            &:nth-of-type(1){
+                span{
+                    float: left;
+                }
+            };
+            &:nth-of-type(3){
+                span{
+                    float: right;
+                }
+            };
+            
         }
     }
     .sort_con{

@@ -2,27 +2,23 @@
   <div class="person">
     <div class="user_info">
        <div class="avatar">
-          <img src="http://192.168.0.57:8088/uploads/-/system/user/avatar/36/avatar.png">
+          <img :src="avatarUrl">
        </div>
-       <p v-if='isLogin'>我在桥上看风景</p>
-       <button open-type="getUserInfo" v-else>登录</button>
+       <p v-if='isLogin'>{{nickName}}</p>
+       <button open-type="getUserInfo" @getuserinfo = 'getUserInfo' v-else>登录</button>
     </div>
     <div class="orders shadow_wrap">
       <ul>
-        <li>
-          <a href="/pages/person/orderList/main">
+        <li @click='goOrder(3)'>
             <img src="/static/img/icon_order.png">
             <p>已确认</p>
-          </a>
         </li>
-        <li>
-          <a href="/pages/person/orderList/main">
+        <li @click='goOrder(2)'>
             <img src="/static/img/icon_order2.png">
             <p>待确认</p>
-          </a>
         </li>
-        <li>
-          <a href="/pages/person/orderList/main">
+        <li @click='goOrder(1)'>
+          <a href="">
             <img src="/static/img/icon_order3.png">
             <p>已取消</p>
           </a>
@@ -35,6 +31,7 @@
         <li class="bg_arrow"><a href="/pages/person/about/main">关于新华网媒体创意工厂</a></li>
       </ul>
     </div>
+    <login v-if='loginFlag' @loadEvent = 'reloadInfo'></login>
   </div>
 </template>
 
@@ -43,19 +40,99 @@ export default {
   name:'Person',
   data () {
     return {
-      isLogin:true
+      isLogin:false,//判断当前是否已经登陆
+      avatarUrl:'/static/img/avatar.png',
+      nickName:''
     }
   },
-
-  components: {
+  onLoad(opt){
+   Object.assign(this.$data, this.$options.data())
   },
-
+  computed:{
+    loginFlag() {
+      return this.$store.getters.loginFlag
+    }
+  },
+  mounted(){
+    this.isLoginEvent();
+  },
   methods: {
     makePhone(){
       wx.makePhoneCall({
         phoneNumber: '18333676885' // 仅为示例，并非真实的电话号码
       })
+    },
+    reloadInfo(){
+      let self = this;
+      wx.getUserInfo({
+        success(res) {
+          const userInfo = res.userInfo
+          self.nickName = userInfo.nickName
+          self.avatarUrl = userInfo.avatarUrl
+          self.isLogin = true;
+        }
+      })
+      console.log(self.isLogin = true,userInfo);
+    },
+    getUserInfo(resp){
+      let self = this;
+      let url = this.$api.login;
+      if(resp.mp.detail.errMsg == 'getUserInfo:ok'){
+        let detail = resp.mp.detail
+        wx.login({
+          success(res){
+            if(res.code){
+              self.$http({
+                url:url,
+                data:{code:res.code,encryptedData:detail.encryptedData,rawData:detail.rawData,iv:detail.iv,signature:detail.signature}
+              }).then((data)=>{
+                wx.setStorageSync('token',data.token);
+                wx.getUserInfo({
+                  success(res) {
+                    const userInfo = res.userInfo
+                    self.nickName = userInfo.nickName
+                    self.avatarUrl = userInfo.avatarUrl
+                  }
+                })
+                self.isLogin = true;
+              })
+            }
+          }
+        })
+      }
+    },
+    isLoginEvent(){
+      let token = wx.getStorageSync('token');
+      let self = this;
+      if(token){
+        wx.getUserInfo({
+          success(res) {
+            const userInfo = res.userInfo
+            self.nickName = userInfo.nickName
+            self.avatarUrl = userInfo.avatarUrl
+            console.log(res);
+          },
+          fail(err){
+            self.isLogin = false;
+          }
+        })
+        self.isLogin = true;
+      }else{
+        self.isLogin = false;
+      }
+      console.log(self.isLogin,0);
+    },
+    goOrder(status){
+      if(this.isLogin){
+        var path =  `/pages/person/orderList/main?status=${status}`
+        wx.navigateTo({url:path})
+      } else{
+        this.$store.commit('update',{'isLogin':true})
+      }
+      
     }
+
+
     
   },
 

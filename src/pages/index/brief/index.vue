@@ -1,10 +1,11 @@
 <template>
   <div class="brief">
     <div class="brief_img shadow_wrap">
-      <img :src="img" mode='widthFix'>
+      <img :src="briefInfo.img" mode='widthFix'>
     </div>
+    <h1>{{briefInfo.title}}</h1>
     <div class="brief_content">
-      <wx-parse :content="info" />
+      <wx-parse :content="briefInfo.text" />
     </div>
   </div>
 </template>
@@ -15,13 +16,14 @@ export default {
   name:'Person',
   data () {
     return {
-      info:'',
-      img:'/static/img/1.jpg',
-      id:''
+      id:'',
+      briefInfo:{}
+
     }
   },
   onLoad(opt){
-    this.id = opt.tid
+    Object.assign(this.$data, this.$options.data())
+    this.id = opt.tid;
   },
   mounted(){
     this.getInfo()
@@ -33,9 +35,9 @@ export default {
   methods: {
     async getInfo(){
       let self = this;
-      let url = `${this.$api.detail}?tid=${this.id}`;
-      let briefInfo = await this.$http({url}).then((data)=>{return data})
-      console.log(briefInfo)
+      let url = `${this.$api.detail}?id=${this.id}`;
+      let briefInfo = await this.$http({loading:true,url}).then((data)=>{return data});
+      this.briefInfo = briefInfo;
     }
   },
   

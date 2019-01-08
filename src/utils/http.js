@@ -1,4 +1,5 @@
 import utils from './index.js'
+import store from '../store/index.js'
 let _http = function (opt){//封装请求
     var self = this
     const _promise =  new Promise((resolve,reject) => {
@@ -47,13 +48,13 @@ let _http = function (opt){//封装请求
     })
 
     return _promise.catch(err=>{
+        wx.hideLoading()
         if(err.code == 10001){
+            wx.hideLoading()
             console.log('err10001',err.msg)
-          //   wx.reLaunch({
-          //     url: '/pages/login/login'
-          // })
+            store.commit('update',{'isLogin':true})
         }
-        else if(err.code = -1){
+        else if(err.code == -1){
             utils.showToast(err.msg)
             console.log('非err10001',err.msg,opt.url)
         }

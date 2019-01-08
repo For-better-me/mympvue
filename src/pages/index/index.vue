@@ -8,7 +8,7 @@
     :imgUrls="imgUrls"></Slider2>
     <div class="home_nav">
         <ul>
-            <li v-for = '(nav,index) in navList' :key = 'nav.id' @click='switchNav(index)'>
+            <li v-for = '(nav,index) in navList' :key = 'nav.id' @click='switchNav(nav.id,nav.title,index)'>
                 <img :src="nav.icon_img">
                 <p>{{nav.title}}</p>
             </li>
@@ -18,7 +18,7 @@
         <h1>{{title}}</h1>
         <a :href="moreUrl">更多</a>
         <block v-for='(item,i) in navList' :key='i'>
-            <video :src="item.video" controls objectFit = 'fill' :poster = 'item.video_img' v-show='i==navCurrent'></video>
+            <video :src="item.video" controls objectFit = 'fill' :poster = 'item.video_img' v-show="i==navCurrent"></video>
         </block>
     </div>
     
@@ -43,15 +43,17 @@ export default {
       moreUrl:''
     }
   },
-  onLoad(){
-    this.getBanner();
-    this.getNavs();
+  onLoad(opt){
+    Object.assign(this.$data, this.$options.data())
+    console.log('onLoad');
   },
-  created () {
-    
+  onShow(){
+    console.log('show',this.navList,this.navCurrent);
   },
   mounted(){
-    
+    this.getBanner();
+    this.getNavs();
+    console.log('mounted');
   },
   components: {
     Slider2
@@ -73,24 +75,22 @@ export default {
         let self = this;
         let url = this.$api.navList
         let navs = [];
-        this.$http({url}).then((data)=>{
+        this.$http({loading:true,url}).then((data)=>{
             self.navList = data;
-            self.switchNav(0)
+            self.switchNav(data[0].id,data[0].title)
         })
         
     },
-    switchNav(index){
-        this.navCurrent = index;
-        this.title = this.navList[index].title
-        let id = this.navList[index].id
-        if(index == 0){
+    switchNav(id,title,i){
+        this.navCurrent = i;
+        this.title = title
+        if(id == 2){
            this.moreUrl = `/pages/index/brief/main?tid=${id}`
-        } else if(index == 4){
+        } else if(id == 9){
            this.moreUrl = `/pages/index/mediaList/main?tid=${id}`
         } else{
-           this.moreUrl = `/pages/lease/order/main?tid=${id}`
+           this.moreUrl = `/pages/lease/order/main?id=${id}`
         }
-        console.log(this.moreUrl)
     },
    
   },

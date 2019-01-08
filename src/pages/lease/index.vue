@@ -2,15 +2,13 @@
   <div class="lease">
     <div class="lease_list">
       <ul>
-        <li class="shadow_wrap">
-          <img src="/static/img/2.jpg">
-          <p class="ellipsis">AR演播厅只能AR演播厅只能演播厅时间简史演播厅时间简史</p>
-          <a href="/page/lease/detail/main">立即预约</a>
-        </li>
-        <li class="shadow_wrap">
-          <img src="/static/img/2.jpg">
-          <p class="ellipsis">AR演播厅只能AR演播厅只能演播厅时间简史演播厅时间简史</p>
-          <a href="/page/lease/detail/main">立即预约</a>
+        <li class="shadow_wrap" v-for="(item,i) in leaseList" :key='i' @click="toDetail('/pages/lease/detail/main',item.id)">
+          <img :src="item.img">
+          <div class="tit_wrap">
+            <img src="/static/img/bg1.png">
+            <p class="ellipsis">{{item.title}}</p>
+            <span @click.stop="toDetail('/pages/lease/order/main',item.id)">立即预约</span>
+          </div>
         </li>
       </ul>
     </div>
@@ -22,13 +20,28 @@ export default {
   name:'Lease',
   data () {
     return {
+      leaseList:[],
+      currentPage:1,
+      totalPage:null
     }
   },
-
+  mounted(){
+    this.getleaseList()
+  },
   components: {
   },
 
   methods: {
+    async getleaseList(page){
+      let url = this.$api.leaseList;
+      let data = await this.$http({loading:true,url}).then((data)=>{return data});
+      this.leaseList = data;
+    },
+    toDetail(path,id){
+      wx.navigateTo({
+        url: `${path}?id=${id}`
+      })
+    }
 
   },
 

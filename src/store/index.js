@@ -5,7 +5,12 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    userName: "定位中.."
+    isLogin: false
+  },
+  getters: {
+    loginFlag: state => {
+      return state.isLogin
+    }
   },
   mutations: {
     /**

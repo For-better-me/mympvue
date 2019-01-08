@@ -1,10 +1,19 @@
 .shadow_wrap{
-    box-shadow:#dcdcdc 0px 0px 40px 3px;
+    box-shadow:#dcdcdc 0px 0px 40px 1px;
 }
 .ellipsis {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+.black_wrap{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 99;
 }
 .video_wrap{
     width: 6rem;
@@ -28,7 +37,7 @@
     h2{
         .ellipsis;
         display: inline-block;
-        width: 70%;
+        width: 66%;
         font-size: 0.28rem;
         color: #333;
         line-height: 0.3rem;
@@ -51,4 +60,7 @@
 .bg_arrow{
     background: url('../img/icon_arrow.png') no-repeat right center;
     background-size: 0.14rem 0.25rem;
+}
+.mpvue-calendar-change ._span {
+    font-size: 0.26rem;
 }

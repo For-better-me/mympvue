@@ -2,7 +2,7 @@
 	"description": "项目配置文件。",
 	"setting": {
 		"urlCheck": false,
-		"es6": false,
+		"es6": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
@@ -10,8 +10,8 @@
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
-	"appid": "wx84e94cdcaafbed35",
-	"projectname": "my-mpvue",
+	"appid": "wx7bbd6d9e3eba00bf",
+	"projectname": "%E5%9C%BA%E5%9C%B0mp",
 	"condition": {
 		"search": {
 			"current": -1,
