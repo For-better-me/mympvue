@@ -7,7 +7,7 @@
             <p :class="current==1?'on':''" @click='switchTab(1)'><span>价目表</span></p>
             <p :class="current==2?'on':''" @click='switchTab(2)'><span>预约规则</span></p>
         </div>
-        <div class="detail_con">
+        <div class="detail_con" v-if='introduce || priceList ||reserveRule'>
             <div class="sort_con"  v-show='current==0' >
                 <wx-parse :content="introduce"/>
             </div>

@@ -33,6 +33,7 @@ export default {
   name:'Home',
   data () {
     return {
+      indicator:false,
       autoplay: true,
       interval: 3000,
       duration: 1000,
@@ -77,7 +78,7 @@ export default {
         let navs = [];
         this.$http({loading:true,url}).then((data)=>{
             self.navList = data;
-            self.switchNav(data[0].id,data[0].title)
+            self.switchNav(data[0].id,data[0].title,0)
         })
         
     },

@@ -13,7 +13,8 @@ let api = {
     showReserveTime:`${baseUrl}/Reserve/showReserveTime`,//获取已预约的时间--post
     reserveList:`${baseUrl}/Reserve/reserveList`,
     cancelOrder:`${baseUrl}/Reserve/cancel`,
-    aboutInfo:`${baseUrl}/Category/aboutInfo`
+    aboutInfo:`${baseUrl}/Category/aboutInfo`,
+    refundInfo:`${baseUrl}/Category/refundInfo`
 
 
 }

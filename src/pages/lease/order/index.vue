@@ -42,7 +42,7 @@
          <button @click="sendCode" :disabled = "disable" class="btn_code">{{captcha}}</button>
          <h2 v-if='chargingMode == 1'>本次您需支付定金：{{priceDate}}元</h2>
          <h2 v-else>本次您需支付定金：{{priceHour}}元</h2>
-         <h5>退款规则</h5>
+         <h5 @click='refundEvent'>退款规则</h5>
          <button form-type = "submit" class="btn_pay">支付</button>
       </div>
 
@@ -62,6 +62,9 @@
             @select="select"
           />
       </div>
+    </div>
+    <div class="refund">
+      
     </div>
     
     
@@ -127,8 +130,9 @@ export default {
         let formPrice = this.priceForm;
         let price = 0;
         this.postData.category_option_id.forEach((item,i)=>{
-          price = price + formPrice[item]*1000*rangeDate/1000*20/100;
+          price = price + formPrice[item]*rangeDate*20/100;
         })
+        price = Math.floor(price*100)/100
         return price;
 
       } else{
@@ -141,8 +145,9 @@ export default {
         let formPrice = this.priceForm;
         let price = 0;
         this.postData.category_option_id.forEach((item,i)=>{
-          price = price + formPrice[item]*1000*rangeDate/1000*20/100;
+          price = price + formPrice[item]*rangeDate*20/100;
         })
+        price = Math.floor(price*100)/100
         return price;
 
       } else{
@@ -520,6 +525,12 @@ export default {
         this.end_hour = val;
       }
       
+    },
+    // 显示退款规则
+    refundEvent(){
+      wx.navigateTo({
+        url:'/pages/person/about/main?id=2'
+      })
     }
 
 

@@ -1,19 +1,21 @@
 <template>
   <div class="orders">
-    <ul v-if='orderList.length>0'>
-      <li class="shadow_wrap" v-for='(item,i) in orderList' :key='item.id'>
-        <h1>订单编号：{{item.out_trade_no}} <span>￥{{item.earnest_money}}</span></h1>
-        <h4>{{item.title}}</h4>
-        <p v-for = '(reserve,j) in  item.reserve_arr' :key='j+reserve.id'>{{reserve.title}}</p>
-        <h5>时间：{{item.start_time}} - {{item.end_time}} </h5>
-        <button v-if='item.status == 3 || item.status == 2' @click='cancelOrder(item.id,i)'>取消订单</button>
-        <button v-else @click='reOrder(item.tid)'>重新预约</button>
-      </li>
-    </ul>
-    <div class="nodata" v-else>
-      <img src="/static/img/nodata.jpg">
-      <p>暂无此类订单</p>
-    </div>
+    <block v-if = 'orderList != null'>
+      <ul v-if='orderList.length>0'>
+        <li class="shadow_wrap" v-for='(item,i) in orderList' :key='item.id'>
+          <h1>订单编号：{{item.out_trade_no}} <span>￥{{item.earnest_money}}</span></h1>
+          <h4>{{item.title}}</h4>
+          <p v-for = '(reserve,j) in  item.reserve_arr' :key='j+reserve.id'>{{reserve.title}}</p>
+          <h5>时间：{{item.start_time}} - {{item.end_time}} </h5>
+          <button v-if='item.status == 3 || item.status == 2' @click='cancelOrder(item.id,i)'>取消订单</button>
+          <button v-else @click='reOrder(item.tid)'>重新预约</button>
+        </li>
+      </ul>
+      <div class="nodata" v-else>
+        <img src="/static/img/nodata.jpg">
+        <p>暂无此类订单</p>
+      </div>
+    </block>
     <login v-if='loginFlag' @loadEvent = 'getOrderList'></login>
   </div>
 </template>
@@ -23,7 +25,7 @@ export default {
   name:'Orders',
   data () {
     return {
-      orderList:[],
+      orderList:null,
       currentPage:1,
       totalPage:0,
       status:'',

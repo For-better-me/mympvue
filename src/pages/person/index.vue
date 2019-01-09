@@ -28,7 +28,7 @@
     <div class="list">
       <ul>
         <li @click="makePhone" class="bg_arrow">电话咨询</li>
-        <li class="bg_arrow"><a href="/pages/person/about/main">关于新华网媒体创意工厂</a></li>
+        <li class="bg_arrow"><a href="/pages/person/about/main?id=1">关于新华网媒体创意工厂</a></li>
       </ul>
     </div>
     <login v-if='loginFlag' @loadEvent = 'reloadInfo'></login>

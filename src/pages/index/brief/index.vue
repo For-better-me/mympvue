@@ -4,7 +4,7 @@
       <img :src="briefInfo.img" mode='widthFix'>
     </div>
     <h1>{{briefInfo.title}}</h1>
-    <div class="brief_content">
+    <div class="brief_content" v-if='briefInfo.text'>
       <wx-parse :content="briefInfo.text" />
     </div>
   </div>
@@ -17,7 +17,11 @@ export default {
   data () {
     return {
       id:'',
-      briefInfo:{}
+      briefInfo:{
+        img:'',
+        title:'',
+        text:''
+      }
 
     }
   },

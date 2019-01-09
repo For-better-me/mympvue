@@ -5,6 +5,7 @@
       :autoplay="autoplay"
       :interval="interval"
       :duration="duration"
+      @change = 'changeIndex'
     >
       <block v-for="(item, index) in imgUrls" :key = 'index'>
         <swiper-item>
@@ -12,6 +13,9 @@
         </swiper-item>
       </block>
     </swiper>
+    <div class="indicator">
+       <span  v-for="(item, index) in imgUrls" :class="index == activeIndex?'on':''"></span>
+    </div>
   </div>
 </template>
 
@@ -20,13 +24,18 @@ export default {
     name:'slider',
     data(){
         return {
-
+          activeIndex:0
         }
+    },
+    methods:{
+      changeIndex(e){
+          this.activeIndex = e.mp.detail.current;
+      }
     },
     props:{
         'indicator': {
           type: Boolean,
-          default: true
+          default: false
         },
         'autoplay': {
           type: Boolean,
@@ -54,6 +63,7 @@ export default {
     height: 4rem;
     overflow: hidden;
     margin-bottom: 0.4rem;
+    position: relative;
   .slide-image{
     width: 100%;
     height: 4rem;
@@ -61,28 +71,26 @@ export default {
   swiper {
     height: 4rem;
   }
+  .indicator{
+    position: absolute;
+    bottom:0.2rem;
+    right: 0.2rem;
+    z-index: 99;
+    span{
+      display: inline-block;
+      width:0.1rem;
+      height: 0.1rem;
+      border-radius: 50%;
+      background: #a8a8c7;
+      margin-left: 0.13rem;
+      &.on{
+        width:0.3rem;
+        background:#fff;
+        border-radius: 0.1rem;
+      }
+    }
+  }
   
 }
-.wx-swiper-dots{position:relative;left: unset!important;right: 0;}
 
-.wx-swiper-dots.wx-swiper-dots-horizontal{
-     margin-bottom: 2px;
-}
-.wx-swiper-dot{
-    width:120px;
-    display: inline-flex;
-    height: 10px;
-    margin-left: 10px;
-    justify-content:space-between;
-}
-.wx-swiper-dot::before{
-    content: '';
-    flex-grow: 1; 
-    background: rgba(255,255,255,0.8);
-    border-radius: 2px
-}
-.wx-swiper-dot-active::before{
-    background:red;   
-    flex-grow: 4; 
-}
 </style>

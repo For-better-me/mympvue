@@ -6,6 +6,7 @@
 .order .order_sub {
   padding: 0.3rem;
   margin-bottom: 0.3rem;
+  border-radius: 2px;
 }
 .order button.btn_pay {
   width: 2rem;
