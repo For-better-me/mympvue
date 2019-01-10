@@ -5,7 +5,9 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    isLogin: false
+    isLogin: false,
+    code: null,
+    time:null
   },
   getters: {
     loginFlag: state => {

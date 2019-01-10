@@ -7,7 +7,7 @@
           <div class="tit_wrap">
             <img src="/static/img/bg1.png">
             <p class="ellipsis">{{item.title}}</p>
-            <span @click.stop="toDetail('/pages/lease/order/main',item.id)">立即预约</span>
+            <span>立即预约</span>
           </div>
         </li>
       </ul>

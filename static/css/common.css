@@ -63,3 +63,6 @@
 .mpvue-calendar-change ._span {
   font-size: 0.26rem;
 }
+.wxParse {
+  overflow: hidden;
+}

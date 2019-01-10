@@ -90,7 +90,7 @@ export default {
         } else if(id == 9){
            this.moreUrl = `/pages/index/mediaList/main?tid=${id}`
         } else{
-           this.moreUrl = `/pages/lease/order/main?id=${id}`
+           this.moreUrl = `/pages/lease/detail/main?id=${id}`
         }
     },
    

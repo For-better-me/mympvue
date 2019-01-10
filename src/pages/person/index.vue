@@ -72,30 +72,31 @@ export default {
           self.isLogin = true;
         }
       })
-      console.log(self.isLogin = true,userInfo);
+      console.log(userInfo);
     },
     getUserInfo(resp){
       let self = this;
       let url = this.$api.login;
       if(resp.mp.detail.errMsg == 'getUserInfo:ok'){
-        let detail = resp.mp.detail
         wx.login({
           success(res){
             if(res.code){
-              self.$http({
-                url:url,
-                data:{code:res.code,encryptedData:detail.encryptedData,rawData:detail.rawData,iv:detail.iv,signature:detail.signature}
-              }).then((data)=>{
-                wx.setStorageSync('token',data.token);
-                wx.getUserInfo({
-                  success(res) {
-                    const userInfo = res.userInfo
+              wx.getUserInfo({
+                success(response) {
+                  const userInfo = response.userInfo
+                  let detail = response.mp.detail
+                  self.$http({
+                    url:url,
+                    data:{code:res.code,encryptedData:detail.encryptedData,rawData:detail.rawData,iv:detail.iv,signature:detail.signature}
+                  }).then((data)=>{
                     self.nickName = userInfo.nickName
                     self.avatarUrl = userInfo.avatarUrl
-                  }
-                })
-                self.isLogin = true;
+                    wx.setStorageSync('token',data.token);
+                    self.isLogin = true;
+                  })
+                }
               })
+              
             }
           }
         })
