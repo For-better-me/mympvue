@@ -2,7 +2,7 @@
   <div class="login">
     <div class="login_modal">
       <h4>温馨提示</h4>
-      <p>为了更好的体验时间简史军军军军为了更好的体验时间简史军军军军为了更好的体验时间简史军军军军</p>
+      <p>为了更好的体验小程序，请先登录</p>
       <div class="btns">
         <button open-type='getUserInfo' class="sure" @getuserinfo='sureEvent'>确定</button>
         <button @click='cancelEvent'>取消</button>
@@ -26,28 +26,51 @@ export default {
   },
   props:['loadEvent'],
   methods: {
+    login(self,code,detail){
+      let url = this.$api.login;
+      self.$http({
+        loading:true,
+        url,
+        data:{code:code,encryptedData:detail.encryptedData,rawData:detail.rawData,iv:detail.iv,signature:detail.signature}
+      }).then((data)=>{
+          wx.setStorageSync('token',data.token);
+          self.$store.commit('update',{'isLogin':false})
+          self.$emit('loadEvent');
+          self.$util.showToast('登录成功')
+      })
+    },
     sureEvent(resp){
       let self = this;
-      let url = this.$api.login;
       if(resp.mp.detail.errMsg == 'getUserInfo:ok'){
         let detail = resp.mp.detail
-        console.log(detail);
-        wx.login({
-          success(res){
-            if(res.code){
-              self.$http({
-                loading:true,
-                url,
-                data:{code:res.code,encryptedData:detail.encryptedData,rawData:detail.rawData,iv:detail.iv,signature:detail.signature}
-              }).then((data)=>{
-                  wx.setStorageSync('token',data.token);
-                  self.$store.commit('update',{'isLogin':false})
-                  self.$emit('loadEvent');
-                  self.$util.showToast('登录成功')
-              })
+        console.log('第一次获取的userinfo',detail);
+        let now = Number(Date.now());
+        let time = Number(self.$store.state.time);
+        let code = self.$store.state.code;
+        console.log(now,time,code,1212121);
+        let isOk = (now-time)<(5*60*1000);
+        console.log(isOk,'isok',now-time);
+        if(isOk){
+          self.login(self,code,detail);
+        } else{
+          console.log('code过期了');
+          wx.login({
+            success(res) {
+              if (res.code) {
+                let now = Date.now();
+                self.$store.commit('update',{'code':res.code,'time':now});
+                wx.getUserInfo({
+                  success(response) {
+                    console.log('第2次获取的userinfo',response);
+                    self.login(self,res.code,response);
+                  }
+                })
+              }
             }
-          }
-        })
+          })
+        }
+        
+        
       }
     },
     cancelEvent(){

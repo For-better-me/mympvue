@@ -52,7 +52,18 @@ let _http = function (opt){//封装请求
         if(err.code == 10001){
             wx.hideLoading()
             console.log('err10001',err.msg)
-            store.commit('update',{'isLogin':true})
+            wx.login({
+              success(resp) {
+                if (resp.code) {
+                  let now = Date.now();
+                  console.log(now);
+                  store.commit('update',{'isLogin':true,'code':resp.code,'time':now})
+                } else {
+                  console.log('登录失败！' + resp.errMsg)
+                }
+              }
+            })
+            
         }
         else if(err.code == -1){
             utils.showToast(err.msg)
