@@ -118,7 +118,7 @@ export default {
   onReachBottom(){
     let status = this.status;
     let currentPage = this.currentPage+1;
-    if(currentPage<this.totalPage){
+    if(currentPage<=this.totalPage){
         this.currentPage = currentPage;
         this.getOrderList(status,currentPage);
     } else{

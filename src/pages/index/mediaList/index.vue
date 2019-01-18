@@ -2,7 +2,7 @@
   <div class="list">
         <div class="video_wrap shadow_wrap" v-for="(item,i) in mediaList" :key='i'>
             <video :src="item.video" controls objectFit = 'fill' :poster = 'item.video_img'></video>
-            <h2>{{item.title}}++{{i}}</h2>
+            <h2>{{item.title}}</h2>
             <span>{{item.time}}</span>
         </div>
   </div>
@@ -58,7 +58,7 @@ export default {
   onReachBottom(){
     let tid = this.tid;
     let currentPage = this.currentPage+1;
-    if(currentPage<this.totalPage){
+    if(currentPage<=this.totalPage){
         this.currentPage = currentPage;
         this.getMedia(tid,currentPage);
     } else{
