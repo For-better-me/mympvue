@@ -3,7 +3,6 @@
     <div class="brief_img shadow_wrap">
       <img :src="briefInfo.img" mode='widthFix'>
     </div>
-    <h1>{{briefInfo.title}}</h1>
     <div class="brief_content" v-if='briefInfo.text'>
       <wx-parse :content="briefInfo.text" />
     </div>

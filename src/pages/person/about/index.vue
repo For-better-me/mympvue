@@ -1,6 +1,5 @@
 <template>
   <div class="about">
-    <h1>{{aboutInfo.title}}</h1>
     <div class="about_content" v-if='aboutInfo.text'>
       <wx-parse :content="aboutInfo.text" />
     </div>

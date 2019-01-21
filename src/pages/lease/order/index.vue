@@ -204,6 +204,14 @@ export default {
         method:'POST',
         data:postData
       }).then(res=>{
+          if(res.length == 0){
+              self.$util.showToast('支付成功')
+              
+              wx.navigateTo({
+                url:'/pages/person/orderList/main?status=2'
+              })
+              return
+          }
           wx.requestPayment({
             timeStamp: res.timestamp,
             nonceStr: res.nonceStr,
@@ -412,10 +420,11 @@ export default {
          return;
       }
       this.$http({
+        loading:true,
         url,
         data:{phone:tel}
       }).then((res)=>{
-        let time = 10;
+        let time = 120;
         let interval = setInterval(() => {
             if (--time > 0) {
                this.captcha =  `重新发送(${time})`

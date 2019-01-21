@@ -62,7 +62,7 @@
         async getInfo(id){
           let self = this;
           let url = `${this.$api.detail}?id=${id}`;
-          let rentDetail = await this.$http({url}).then((data)=>{return data});
+          let rentDetail = await this.$http({loading:true,url}).then((data)=>{return data});
           this.rentDetail = rentDetail;
           this.introduce = rentDetail.introduce;
           this.priceList = rentDetail.price_list;
