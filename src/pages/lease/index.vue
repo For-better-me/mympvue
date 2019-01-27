@@ -3,7 +3,7 @@
     <div class="lease_list">
       <ul>
         <li class="shadow_wrap" v-for="(item,i) in leaseList" :key='i' @click="toDetail('/pages/lease/detail/main',item.id)">
-          <img :src="item.img">
+          <img :src="imgPrefix+item.img">
           <div class="tit_wrap">
             <img src="/static/img/bg1.png">
             <p class="ellipsis">{{item.title}}</p>
@@ -20,6 +20,7 @@ export default {
   name:'Lease',
   data () {
     return {
+      imgPrefix:this.$imgPrefix,
       leaseList:[],
       currentPage:1,
       totalPage:null

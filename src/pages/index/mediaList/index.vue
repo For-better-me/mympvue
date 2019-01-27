@@ -1,7 +1,7 @@
 <template>
   <div class="list">
         <div class="video_wrap shadow_wrap" v-for="(item,i) in mediaList" :key='i'>
-            <video :src="item.video" controls objectFit = 'fill' :poster = 'item.video_img'></video>
+            <video :src="imgPrefix+item.video" controls objectFit = 'fill' :poster = 'imgPrefix+item.video_img'></video>
             <h2>{{item.title}}</h2>
             <span>{{item.time}}</span>
         </div>
@@ -13,6 +13,7 @@ export default {
   name:'videoList',
   data () {
     return {
+      imgPrefix:this.$imgPrefix,
       mediaList:[],
       currentPage:1,
       totalPage:0,
@@ -66,7 +67,21 @@ export default {
     }
     
     console.log('onReachBottom');
-  }
+  },
+  onShareAppMessage() {
+      let self =this;
+      return {
+        title: '创意列表', // 转发后 所显示的title
+        path: `/pages/index/mediaList/main?tid=${self.tid}`, // 相对的路径
+        success: (res)=>{    // 成功后要做的事情
+          self.$util.showToast('分享成功')
+   
+        },
+        fail: function (res) {
+           self.$util.showToast('分享失败')
+        }
+      }
+    }
 }
 </script>
 

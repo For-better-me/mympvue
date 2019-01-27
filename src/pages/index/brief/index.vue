@@ -1,7 +1,7 @@
 <template>
   <div class="brief">
     <div class="brief_img shadow_wrap">
-      <img :src="briefInfo.img" mode='widthFix'>
+      <img :src="imgPrefix+briefInfo.img" mode='widthFix'>
     </div>
     <div class="brief_content" v-if='briefInfo.text'>
       <wx-parse :content="briefInfo.text" />
@@ -15,6 +15,7 @@ export default {
   name:'Person',
   data () {
     return {
+      imgPrefix:this.$imgPrefix,
       id:'',
       briefInfo:{
         img:'',

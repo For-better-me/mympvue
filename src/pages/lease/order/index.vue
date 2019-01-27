@@ -1,5 +1,5 @@
 <template>
-  <div class="order">
+  <div class="order" v-if = 'isRender'>
     <form @submit = "sureOrder">
       <div class="order_time shadow_wrap order_sub">
         <h4>预约时间</h4>
@@ -8,15 +8,16 @@
           <input  disabled @click="showCalendarEvent('2')" placeholder="结束日期" v-model = 'postData.end_time'/>
         </div>
         <div class="date_wrap2" v-else>
-            <picker
+           <!--  <picker
               mode="date"
               :start="start_limit"
               :end="end_limit"
               :value='dateHour'
               @change="bindDateChange"
             >
-            <input disabled  placeholder="选择日期" v-model = 'dateHour' class="date" />
-            </picker>
+            
+            </picker> -->
+            <input disabled  placeholder="选择日期" v-model = 'dateHour' class="date" @click='showCalendarHour'/>
             <picker @change="bindStartChange" :value="hourIndex" :range="hourArray">
               <input disabled  placeholder="开始时间" v-model = 'start_hour' class="hour" />
             </picker>
@@ -63,6 +64,20 @@
           />
       </div>
     </div>
+    <div v-else>
+      <div class="black_wrap" v-show='showCalendarH'>
+        <Calendar
+            :months="months"
+            :value="valueHour"
+            :begin='start_limit'
+            :end = 'end_limit'
+            lunar
+            clean
+            ref="calendar"
+            @select="selectHour"
+          />
+      </div>
+    </div>
     <div class="refund">
       
     </div>
@@ -77,16 +92,19 @@ export default {
   name:'order',
   data () {
     return {
+      isRender:false,
       months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
       disabledarr: [],
       value: [],
       begin:[],
       end:[],
+      valueHour:[],//按小时的时候的天数
       id:'',
       siteCheckbox:[],
       priceForm:{},
       chargingMode:1,//1-天，2-小时
       showCalendar:false,
+      showCalendarH:false,
       timeFlag:'1',//1--开始时间，2--结束时间
       postData:{
         start_time:'',
@@ -102,18 +120,20 @@ export default {
       dateOrdered:[],//已预约的时间--按天
       hourOrdered:[],//已预约的时间--按小小時
       hourOrderedArr:[],//已预约的时间--按小小時--选定日期后
-      start_limit:'',//按小时选择 日期限制下限
-      end_limit:'',//按小时选择 日期限制上限
+      start_limit:[],//按小时选择 日期限制下限
+      end_limit:[],//按小时选择 日期限制上限
       start_hour:'',//按小时选择，开始时间
       end_hour:'',//按小时选择，结束时间
       dateHour:'',//按小时选择，选择的日期
       hourArray:[],
       hourIndex:0,
+      
 
     }
   },
   onLoad(opt){
     Object.assign(this.$data, this.$options.data())
+    // this.id = '7'
     this.id = opt.id
   },
   mounted(){
@@ -205,11 +225,13 @@ export default {
         data:postData
       }).then(res=>{
           if(res.length == 0){
-              self.$util.showToast('支付成功')
-              
-              wx.navigateTo({
-                url:'/pages/person/orderList/main?status=2'
-              })
+              self.$util.showToast('支付成功','success')
+              setTimeout(function(){
+                wx.navigateTo({
+                  url:'/pages/person/orderList/main?status=2'
+                })
+              },500)
+
               return
           }
           wx.requestPayment({
@@ -219,13 +241,21 @@ export default {
             signType: res.signType,
             paySign: res.paySign,
             success(res) { 
-              self.$util.showToast('支付成功')
-              wx.navigateTo({
-                url:'/pages/person/orderList/main?status=2'
-              })
+              self.$util.showToast('支付成功','success')
+              setTimeout(function(){
+                wx.navigateTo({
+                  url:'/pages/person/orderList/main?status=2'
+                })
+              },500)
+              
             },
             fail(err) { 
               self.$util.showToast('取消支付')
+              setTimeout(function(){
+                wx.navigateTo({
+                  url:'/pages/person/orderList/main?status=1'
+                })
+              },500)
               console.log('err',err)
             }
           })
@@ -241,10 +271,11 @@ export default {
       dateValEnd.setTime(dateValEnd.getTime()+24*60*60*1000*60);
       dateValStart = this.$util.formatDate(dateValStart);
       dateValEnd = this.$util.formatDate(dateValEnd);
-      this.start_limit = dateValStart;
       this.dateHour = dateValStart;
-      this.end_limit = dateValEnd;
+      this.start_limit = dateValStart.split('-');
+      this.end_limit = dateValEnd.split('-');
       this.markHourOrder(dateValStart)
+      console.log(this.start_limit,this.end_limit,dateValStart);
     },
     markHourOrder(date){
       let hourArray=['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00'];
@@ -298,6 +329,7 @@ export default {
       this.priceForm = priceForm;
       //为了保证数据能获取到
       this.getReserveTime(this.id);
+      this.isRender = true
       console.log(data.charging_mode,priceForm);
       
     },
@@ -377,6 +409,10 @@ export default {
       this.timeLimit(val);
 
     },
+    //展示日历--hour
+    showCalendarHour(){
+      this.showCalendarH = true;
+    },
     // 限制日历的所选日期下限
     timeLimit(val){
       var valueB = [];
@@ -443,6 +479,17 @@ export default {
       this.markHourOrder(e.mp.detail.value)
       this.start_hour = '';
       this.end_hour = '';
+
+    },
+    selectHour(val,val2){
+      val[1] = val[1]>9?val[1]:'0'+val[1];
+      val[2] = val[2]>9?val[2]:'0'+val[2];
+      let select_date = val.join('-');
+      this.dateHour = select_date;
+      this.markHourOrder(select_date)
+      this.start_hour = '';
+      this.end_hour = '';
+      this.showCalendarH = false;
 
     },
     bindStartChange(e){

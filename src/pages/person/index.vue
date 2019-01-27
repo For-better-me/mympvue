@@ -59,7 +59,7 @@ export default {
   methods: {
     makePhone(){
       wx.makePhoneCall({
-        phoneNumber: '18333676885' // 仅为示例，并非真实的电话号码
+        phoneNumber: '01088050309' // 仅为示例，并非真实的电话号码
       })
     },
     reloadInfo(){

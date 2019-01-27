@@ -1,7 +1,7 @@
 <template>
-  <div class="detail">
+  <div class="detail" v-if = 'img'>
     <div class="detail_box shadow_wrap">
-        <img :src="img" mode='widthFix' class="img_detail">
+        <img :src="imgPrefix+img" mode='widthFix' class="img_detail">
         <div class="sort">
             <p :class="current==0?'on':''" @click='switchTab(0)'><span>设备介绍</span></p>
             <p :class="current==1?'on':''" @click='switchTab(1)'><span>价目表</span></p>
@@ -36,6 +36,7 @@
       name:'Person',
       data () {
         return {
+          imgPrefix:this.$imgPrefix,
           id:'',
           current:0,
           img:'',
@@ -71,7 +72,7 @@
         },
         makePhone(){
           wx.makePhoneCall({
-            phoneNumber: '18333676885' // 仅为示例，并非真实的电话号码
+            phoneNumber: '01088050309' // 仅为示例，并非真实的电话号码
           })
         },
         goOrder(){

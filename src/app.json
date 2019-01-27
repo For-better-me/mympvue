@@ -1,9 +1,9 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/lease/order/main",
     "pages/person/main",
     "pages/lease/main",
-    "pages/lease/order/main",
     "pages/person/orderList/main",
     "pages/index/brief/main",
     "pages/index/mediaList/main",

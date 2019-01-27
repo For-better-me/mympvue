@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-if = 'navList.length>0'>
     <Slider2
     :indicator="indicator"
     :autoplay="autoplay"
@@ -9,7 +9,7 @@
     <div class="home_nav">
         <ul>
             <li v-for = '(nav,index) in navList' :key = 'nav.id' @click='switchNav(nav.id,nav.title,index)'>
-                <img :src="nav.icon_img">
+                <img :src="imgPrefix+nav.icon_img">
                 <p>{{nav.title}}</p>
             </li>
         </ul>
@@ -18,7 +18,7 @@
         <h1>{{title}}</h1>
         <a :href="moreUrl">更多</a>
         <block v-for='(item,i) in navList' :key='i'>
-            <video :src="item.video" controls objectFit = 'fill' :poster = 'item.video_img' v-show="i==navCurrent"></video>
+            <video :src="imgPrefix+item.video" controls objectFit = 'fill' :poster = 'imgPrefix+item.video_img' v-show="i==navCurrent"></video>
         </block>
     </div>
     
@@ -41,7 +41,8 @@ export default {
       imgUrls: [],
       navCurrent:0,
       title:'视频',
-      moreUrl:''
+      moreUrl:'',
+      imgPrefix:this.$imgPrefix
     }
   },
   onLoad(opt){

@@ -9,12 +9,12 @@
     >
       <block v-for="(item, index) in imgUrls" :key = 'index'>
         <swiper-item>
-          <image :src="item" class="slide-image" mode = 'scaleToFill' />
+          <image :src="imgPrefix+item" class="slide-image" mode = 'scaleToFill' />
         </swiper-item>
       </block>
     </swiper>
     <div class="indicator">
-       <span  v-for="(item, index) in imgUrls" :class="index == activeIndex?'on':''"></span>
+       <span  v-for="(item, index) in imgUrls" :class="index == activeIndex?'on':''" :key = 'index'></span>
     </div>
   </div>
 </template>
@@ -24,7 +24,8 @@ export default {
     name:'slider',
     data(){
         return {
-          activeIndex:0
+          activeIndex:0,
+          imgPrefix:this.$imgPrefix
         }
     },
     methods:{

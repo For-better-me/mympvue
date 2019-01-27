@@ -9,10 +9,11 @@ import login from '@/components/login'
 
 import 'mpvue-calendar/src/style.css'
 Vue.prototype.$store = store;
-Vue.prototype.$api = api;
+Vue.prototype.$api = api.api;
 Vue.prototype.$http = _http;
 Vue.prototype.$util = _util;
 Vue.prototype.$login = _login;
+Vue.prototype.$imgPrefix = api.imgPrefix;
 Vue.component('login', login);
 Vue.config.productionTip = false
 App.mpType = 'app'

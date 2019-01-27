@@ -1,4 +1,5 @@
 let baseUrl = 'https://www.99tjit.cn/api';
+let imgPrefix = 'https://www.99tjit.cn';
 let api = {
     banner:`${baseUrl}/focus/getFcousList`,//首页banner图--get
     reserveOption:`${baseUrl}/Reserve/reserveOption`,//预约表单选项--get
@@ -19,4 +20,7 @@ let api = {
 
 }
 
-export default api
+export default {
+    api,
+    imgPrefix
+}
