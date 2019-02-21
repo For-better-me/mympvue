@@ -11,6 +11,13 @@
   vertical-align: top;
   text-align: center;
 }
+.home_nav ul li.on p {
+  color: #004ea4;
+}
+.home_nav ul li.on img {
+  width: 0.64rem;
+  height: 0.52rem;
+}
 .home_nav ul li img {
   width: 0.6rem;
   height: 0.5rem;

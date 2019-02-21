@@ -27,6 +27,7 @@
         </div>
       </div>
       <div class="site shadow_wrap order_sub">
+        <h4 style="margin-bottom: 0.15rem">服务项目</h4>
         <checkbox-group @change="checkboxChange" name="checkgo">
           <label class="checkbox" v-for="(item,index) in siteCheckbox" :key = "index">
             <p>{{item.title}}<span v-if='item.rent_price>0'>{{item.rent_price}}元/{{chargingMode=='1'?'天':'小时'}}</span></p>
@@ -36,8 +37,9 @@
        
       </div>
       <div class="user_order shadow_wrap order_sub">
-         <h4>预约时间</h4>
+         <h4>基本信息</h4>
          <input placeholder="请输入真实姓名" name='name' v-model = 'postData.name' />
+         <input placeholder="单位/部门" name='name' v-model = 'postData.department' />
          <input type = 'number' placeholder="请输入手机号" name='phone' maxlength='11' v-model = 'postData.phone'/>
          <input type = 'number' placeholder="请输入验证码" name='code' class="code" v-model = 'postData.code' />
          <button @click="sendCode" :disabled = "disable" class="btn_code">{{captcha}}</button>
@@ -110,6 +112,7 @@ export default {
         start_time:'',
         end_time:'',
         category_option_id:[],
+        department:'',
         phone:'',
         name:'',
         tid:'',
@@ -117,6 +120,7 @@ export default {
       },
       disable:false,//是否可以获取验证码
       captcha:'获取验证码',
+      interval:null,
       dateOrdered:[],//已预约的时间--按天
       hourOrdered:[],//已预约的时间--按小小時
       hourOrderedArr:[],//已预约的时间--按小小時--选定日期后
@@ -133,7 +137,7 @@ export default {
   },
   onLoad(opt){
     Object.assign(this.$data, this.$options.data())
-    // this.id = '7'
+    console.log('onload',this.$data);
     this.id = opt.id
   },
   mounted(){
@@ -202,6 +206,10 @@ export default {
         this.$util.showToast('请输入真实姓名');
         return
       }
+      if(!postData.department){
+        this.$util.showToast('请输入部门/单位');
+        return
+      }
       if(!postData.phone){
         this.$util.showToast('请输入手机号');
         return
@@ -242,6 +250,8 @@ export default {
             paySign: res.paySign,
             success(res) { 
               self.$util.showToast('支付成功','success')
+              self.captcha = '获取验证码'
+              clearInterval(self.interval)
               setTimeout(function(){
                 wx.navigateTo({
                   url:'/pages/person/orderList/main?status=2'
@@ -275,19 +285,24 @@ export default {
       this.start_limit = dateValStart.split('-');
       this.end_limit = dateValEnd.split('-');
       this.markHourOrder(dateValStart)
-      console.log(this.start_limit,this.end_limit,dateValStart);
+      console.log(1111,this.start_limit,this.end_limit,dateValStart);
     },
     markHourOrder(date){
+      let self = this;
       let hourArray=['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00'];
       let orderHour = this.hourOrdered;
       let date_hours = [];
-      orderHour.forEach((item,i)=>{
-        if(item.date == date){
-          date_hours = item.hours;
-          this.hourOrderedArr = item.hours;
-          return false;
+      for(let i = 0 ;i<orderHour.length;i++){
+        if(orderHour[i].date == date){
+          date_hours = orderHour[i].hours;
+          self.hourOrderedArr = orderHour[i].hours;
+          break;
+        } else{
+          date_hours = [];
+          self.hourOrderedArr = [];
         }
-      })
+      }
+    
       if(date_hours.length>0){
         date_hours.forEach((item_order,i)=>{
           for (let j = 0;j<hourArray.length; j++) {
@@ -301,7 +316,6 @@ export default {
         
       } 
       this.hourArray = hourArray;
-      console.log('markHourOrder',this.hourArray);
     },
     // 支付接口
     countPrice(start_time,end_time){
@@ -461,12 +475,12 @@ export default {
         data:{phone:tel}
       }).then((res)=>{
         let time = 120;
-        let interval = setInterval(() => {
+        self.interval = setInterval(() => {
             if (--time > 0) {
                this.captcha =  `重新发送(${time})`
                this.disable = true;
             } else {
-                clearInterval(interval)
+                clearInterval(self.interval)
                 this.captcha = '获取验证码'
                 this.disable = false;
           

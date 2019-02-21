@@ -8,8 +8,8 @@
       @change = 'changeIndex'
     >
       <block v-for="(item, index) in imgUrls" :key = 'index'>
-        <swiper-item>
-          <image :src="imgPrefix+item" class="slide-image" mode = 'scaleToFill' />
+        <swiper-item @click='toBanner(item.url)'>
+          <image :src="imgPrefix+item.img" class="slide-image" mode = 'scaleToFill' />
         </swiper-item>
       </block>
     </swiper>
@@ -31,6 +31,15 @@ export default {
     methods:{
       changeIndex(e){
           this.activeIndex = e.mp.detail.current;
+      },
+      toBanner(link){
+        console.log(link)
+        if(link){
+          wx.navigateTo({
+            url:`/pages/index/detail/main?link=${link}`
+          })
+        }
+          
       }
     },
     props:{

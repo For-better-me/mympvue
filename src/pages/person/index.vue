@@ -14,12 +14,12 @@
             <p>已确认</p>
         </li>
         <li @click='goOrder(2)'>
-            <img src="/static/img/icon_order2.png">
+            <img src="/static/img/icon_order_2.png">
             <p>待确认</p>
         </li>
         <li @click='goOrder(1)'>
           <a href="">
-            <img src="/static/img/icon_order3.png">
+            <img src="/static/img/icon_order_3.png">
             <p>已取消</p>
           </a>
         </li>
@@ -28,7 +28,7 @@
     <div class="list">
       <ul>
         <li @click="makePhone" class="bg_arrow">电话咨询</li>
-        <li class="bg_arrow"><a href="/pages/person/about/main?id=1">关于新华网媒体创意工厂</a></li>
+        <li class="bg_arrow"><a href="/pages/person/about/main?id=1">关于新华网媒体创意工场</a></li>
       </ul>
     </div>
     <login v-if='loginFlag' @loadEvent = 'reloadInfo'></login>
@@ -83,11 +83,11 @@ export default {
             if(res.code){
               wx.getUserInfo({
                 success(response) {
+                  console.log(response,222);
                   const userInfo = response.userInfo
-                  let detail = response.mp.detail
                   self.$http({
                     url:url,
-                    data:{code:res.code,encryptedData:detail.encryptedData,rawData:detail.rawData,iv:detail.iv,signature:detail.signature}
+                    data:{code:res.code,encryptedData:response.encryptedData,rawData:response.rawData,iv:response.iv,signature:response.signature}
                   }).then((data)=>{
                     self.nickName = userInfo.nickName
                     self.avatarUrl = userInfo.avatarUrl

@@ -6,6 +6,7 @@
     "pages/lease/main",
     "pages/person/orderList/main",
     "pages/index/brief/main",
+    "pages/index/detail/main",
     "pages/index/mediaList/main",
     "pages/lease/detail/main",
     "pages/lease/tip/main",

@@ -8,8 +8,9 @@
     :imgUrls="imgUrls"></Slider2>
     <div class="home_nav">
         <ul>
-            <li v-for = '(nav,index) in navList' :key = 'nav.id' @click='switchNav(nav.id,nav.title,index)'>
-                <img :src="imgPrefix+nav.icon_img">
+            <li v-for = '(nav,index) in navList' :key = 'nav.id' @click='switchNav(nav.id,nav.title,index)' :class='navCurrent == index?"on":""'>
+                <img :src="nav.icon_img_bg?imgPrefix+nav.icon_img_bg:imgPrefix+nav.icon_img" v-if='navCurrent == index'>
+                <img :src="imgPrefix+nav.icon_img" v-else>
                 <p>{{nav.title}}</p>
             </li>
         </ul>
@@ -42,7 +43,7 @@ export default {
       navCurrent:0,
       title:'视频',
       moreUrl:'',
-      imgPrefix:this.$imgPrefix
+      imgPrefix:this.$imgPrefix,
     }
   },
   onLoad(opt){
@@ -65,13 +66,10 @@ export default {
     getBanner(){
         let self = this;
         let url = this.$api.banner;
-        let imgs = [];
         this.$http({url}).then((data)=>{
-            for(let i = 0;i<data.length;i++){
-                imgs.push(data[i].img)
-            }
+            self.imgUrls = data;
         })
-        self.imgUrls = imgs;
+        
     },
     getNavs(){
         let self = this;
