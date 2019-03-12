@@ -77,7 +77,7 @@ export default {
     getUserInfo(resp){
       let self = this;
       let url = this.$api.login;
-      if(resp.mp.detail.errMsg == 'getUserInfo:ok'){
+      if(resp.mp.detail.errMsg == 'getUserInfo:ok' && resp.mp.detail.encryptedData){
         wx.login({
           success(res){
             if(res.code){

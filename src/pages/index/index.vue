@@ -16,11 +16,12 @@
         </ul>
     </div>
     <div class="video_wrap shadow_wrap">
-        <h1>{{title}}</h1>
-        <a :href="moreUrl">更多</a>
+        <!-- <h1>{{title}}</h1> -->
         <block v-for='(item,i) in navList' :key='i'>
             <video :src="imgPrefix+item.video" controls objectFit = 'fill' :poster = 'imgPrefix+item.video_img' v-show="i==navCurrent"></video>
         </block>
+        <a :href="moreUrl">更多详情</a>
+        
     </div>
     
    

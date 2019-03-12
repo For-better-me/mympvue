@@ -41,7 +41,7 @@ export default {
     },
     sureEvent(resp){
       let self = this;
-      if(resp.mp.detail.errMsg == 'getUserInfo:ok'){
+      if(resp.mp.detail.errMsg == 'getUserInfo:ok' && resp.mp.detail.encryptedData){
         let detail = resp.mp.detail
         console.log('第一次获取的userinfo',detail);
         let now = Number(Date.now());
