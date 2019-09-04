@@ -1,14 +1,24 @@
 <template>
-  <div class="order" v-if = 'isRender'>
-    <form @submit = "sureOrder">
+  <div class="order" v-if="isRender">
+    <form @submit="sureOrder">
       <div class="order_time shadow_wrap order_sub">
         <h4>预约时间</h4>
-        <div class="date_wrap" v-if='chargingMode==1'>
-          <input  disabled @click="showCalendarEvent('1')" placeholder="开始日期" v-model = 'postData.start_time'/>
-          <input  disabled @click="showCalendarEvent('2')" placeholder="结束日期" v-model = 'postData.end_time'/>
+        <div class="date_wrap" v-if="chargingMode==1">
+          <input
+            disabled
+            @click="showCalendarEvent('1')"
+            placeholder="开始日期"
+            v-model="postData.start_time"
+          />
+          <input
+            disabled
+            @click="showCalendarEvent('2')"
+            placeholder="结束日期"
+            v-model="postData.end_time"
+          />
         </div>
         <div class="date_wrap2" v-else>
-           <!--  <picker
+          <!--  <picker
               mode="date"
               :start="start_limit"
               :end="end_limit"
@@ -16,241 +26,277 @@
               @change="bindDateChange"
             >
             
-            </picker> -->
-            <input disabled  placeholder="选择日期" v-model = 'dateHour' class="date" @click='showCalendarHour'/>
-            <picker @change="bindStartChange" :value="hourIndex" :range="hourArray">
-              <input disabled  placeholder="开始时间" v-model = 'start_hour' class="hour" />
-            </picker>
-            <picker @change="bindEndChange" :value="hourIndex" :range="hourArray">
-              <input disabled  placeholder="结束时间" v-model = 'end_hour' class="hour" />
-            </picker>
+          </picker>-->
+          <input
+            disabled
+            placeholder="选择日期"
+            v-model="dateHour"
+            class="date"
+            @click="showCalendarHour"
+          />
+          <picker @change="bindStartChange" :value="hourIndex" :range="hourArray">
+            <input disabled placeholder="开始时间" v-model="start_hour" class="hour" />
+          </picker>
+          <picker @change="bindEndChange" :value="hourIndex" :range="hourArray">
+            <input disabled placeholder="结束时间" v-model="end_hour" class="hour" />
+          </picker>
         </div>
-        <p v-if="chargingMode==3" style="font-size:12px;color:#999;margin-top:8px;">温馨提示：该预约只支持08:00-12:00与14:00-18:00两个时间段</p>
       </div>
       <div class="site shadow_wrap order_sub">
         <h4 style="margin-bottom: 0.15rem">服务项目</h4>
         <checkbox-group @change="checkboxChange" name="checkgo">
-          <label class="checkbox" v-for="(item,index) in siteCheckbox" :key = "index">
-            <p>{{item.title}}<span v-if='item.rent_price>0'>{{item.rent_price}}元/{{modeUnit}}</span></p>
+          <label class="checkbox" v-for="(item,index) in siteCheckbox" :key="index">
+            <p>
+              {{item.title}}
+              <span v-if="item.rent_price>0">{{item.rent_price}}元/{{modeUnit}}</span>
+            </p>
             <checkbox :value="item.id" />
           </label>
         </checkbox-group>
-       
       </div>
       <div class="user_order shadow_wrap order_sub">
-         <h4>基本信息</h4>
-         <input placeholder="请输入真实姓名" name='name' v-model = 'postData.name' />
-         <input placeholder="单位/部门" name='name' v-model = 'postData.department' />
-         <input type = 'number' placeholder="请输入手机号" name='phone' maxlength='11' v-model = 'postData.phone'/>
-         <!-- <input type = 'number' placeholder="请输入验证码" name='code' class="code" v-model = 'postData.code' /> -->
-         <!-- <button @click="sendCode" :disabled = "disable" class="btn_code">{{captcha}}</button> -->
-         <h2 v-if='chargingMode == 1'>本次您需支付定金：{{priceDate}}元</h2>
-         <h2 v-else-if='chargingMode == 2'>本次您需支付定金：{{priceHour}}元</h2>
-         <h2 v-else>本次您需支付定金：{{priceSite}}元</h2>
-         <h5 @click='refundEvent'>退款规则</h5>
-         <button form-type = "submit" class="btn_pay">支付</button>
+        <h4>基本信息</h4>
+        <input placeholder="请输入真实姓名" name="name" v-model="postData.name" />
+        <input placeholder="单位/部门" name="name" v-model="postData.department" />
+        <input
+          type="number"
+          placeholder="请输入手机号"
+          name="phone"
+          maxlength="11"
+          v-model="postData.phone"
+        />
+        <!-- <input type = 'number' placeholder="请输入验证码" name='code' class="code" v-model = 'postData.code' /> -->
+        <!-- <button @click="sendCode" :disabled = "disable" class="btn_code">{{captcha}}</button> -->
+        <h2 v-if="chargingMode == 1">本次您需支付定金：{{priceDate}}元</h2>
+        <h2 v-else-if="chargingMode == 2">本次您需支付定金：{{priceHour}}元</h2>
+        <h2 v-else>本次您需支付定金：{{priceSite}}元</h2>
+        <h5 @click="refundEvent">退款规则</h5>
+        <button form-type="submit" class="btn_pay">支付</button>
       </div>
-
     </form>
-    <login v-if='isLogin'></login>
-    <div v-if='chargingMode == 1'>
-      <div class="black_wrap" v-show='showCalendar'>
+    <login v-if="isLogin"></login>
+    <div v-if="chargingMode == 1">
+      <div class="black_wrap" v-show="showCalendar">
         <Calendar
-            :months="months"
-            :value="value"
-            :begin='begin'
-            :end = 'end'
-            :disabled="disabledarr"
-            lunar
-            clean
-            ref="calendar"
-            @select="select"
-          />
+          :months="months"
+          :value="value"
+          :begin="begin"
+          :end="end"
+          :disabled="disabledarr"
+          lunar
+          clean
+          ref="calendar"
+          @select="select"
+        />
       </div>
     </div>
     <div v-else>
-      <div class="black_wrap" v-show='showCalendarH'>
+      <div class="black_wrap" v-show="showCalendarH">
         <Calendar
-            :months="months"
-            :value="valueHour"
-            :begin='start_limit'
-            :end = 'end_limit'
-            lunar
-            clean
-            ref="calendar"
-            @select="selectHour"
-          />
+          :months="months"
+          :value="valueHour"
+          :begin="start_limit"
+          :end="end_limit"
+          lunar
+          clean
+          ref="calendar"
+          @select="selectHour"
+        />
       </div>
     </div>
-    <div class="refund">
-      
-    </div>
-    
-    
+    <div class="refund"></div>
   </div>
 </template>
 
 <script>
-import Calendar from 'mpvue-calendar'
+import Calendar from "mpvue-calendar";
 export default {
-  name:'order',
-  data () {
+  name: "order",
+  data() {
     return {
-      isRender:false,
-      months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+      isRender: false,
+      months: [
+        "一月",
+        "二月",
+        "三月",
+        "四月",
+        "五月",
+        "六月",
+        "七月",
+        "八月",
+        "九月",
+        "十月",
+        "十一月",
+        "十二月"
+      ],
       disabledarr: [],
       value: [],
-      begin:[],
-      end:[],
-      valueHour:[],//按小时的时候的天数
-      id:'',
-      siteCheckbox:[],
-      priceForm:{},
-      chargingMode:1,//1-天，2-小时
-      showCalendar:false,
-      showCalendarH:false,
-      timeFlag:'1',//1--开始时间，2--结束时间
-      postData:{
-        start_time:'',
-        end_time:'',
-        category_option_id:[],
-        department:'',
-        phone:'',
-        name:'',
-        tid:'',
-        code:''
+      begin: [],
+      end: [],
+      valueHour: [], //按小时的时候的天数
+      id: "",
+      siteCheckbox: [],
+      priceForm: {},
+      chargingMode: 1, //1-天，2-小时
+      showCalendar: false,
+      showCalendarH: false,
+      timeFlag: "1", //1--开始时间，2--结束时间
+      postData: {
+        start_time: "",
+        end_time: "",
+        category_option_id: [],
+        department: "",
+        phone: "",
+        name: "",
+        tid: "",
+        code: ""
       },
-      disable:false,//是否可以获取验证码
-      captcha:'获取验证码',
-      interval:null,
-      dateOrdered:[],//已预约的时间--按天
-      hourOrdered:[],//已预约的时间--按小小時
-      hourOrderedArr:[],//已预约的时间--按小小時--选定日期后
-      start_limit:[],//按小时选择 日期限制下限
-      end_limit:[],//按小时选择 日期限制上限
-      start_hour:'',//按小时选择，开始时间
-      end_hour:'',//按小时选择，结束时间
-      dateHour:'',//按小时选择，选择的日期
-      hourArray:[],
-      hourIndex:0,
-      
-
-    }
+      disable: false, //是否可以获取验证码
+      captcha: "获取验证码",
+      interval: null,
+      dateOrdered: [], //已预约的时间--按天
+      hourOrdered: [], //已预约的时间--按小小時
+      hourOrderedArr: [], //已预约的时间--按小小時--选定日期后
+      start_limit: [], //按小时选择 日期限制下限
+      end_limit: [], //按小时选择 日期限制上限
+      start_hour: "", //按小时选择，开始时间
+      end_hour: "", //按小时选择，结束时间
+      dateHour: "", //按小时选择，选择的日期
+      hourArray: [],
+      hourIndex: 0
+    };
   },
-  onLoad(opt){
-    Object.assign(this.$data, this.$options.data())
-    console.log('onload',this.$data);
-    this.id = opt.id
+  onLoad(opt) {
+    Object.assign(this.$data, this.$options.data());
+    console.log("onload", this.$data);
+    this.id = opt.id;
   },
-  mounted(){
+  mounted() {
     this.reserveOption(this.id);
   },
-  components: {Calendar},
-  computed:{
+  components: { Calendar },
+  computed: {
     isLogin() {
-        return this.$store.getters.loginFlag
-      },
-    priceDate(){
-      if(this.postData.start_time&&this.postData.end_time&&this.postData.category_option_id){
-        let rangeDate = this.countPrice(this.postData.start_time,this.postData.end_time);
+      return this.$store.getters.loginFlag;
+    },
+    priceDate() {
+      if (
+        this.postData.start_time &&
+        this.postData.end_time &&
+        this.postData.category_option_id
+      ) {
+        let rangeDate = this.countPrice(
+          this.postData.start_time,
+          this.postData.end_time
+        );
         let formPrice = this.priceForm;
         let price = 0;
-        this.postData.category_option_id.forEach((item,i)=>{
-          price = price + formPrice[item]*rangeDate*20/100;
-        })
-        price = Math.floor(price*100)/100
+        this.postData.category_option_id.forEach((item, i) => {
+          price = price + formPrice[item] * rangeDate * 20 / 100;
+        });
+        price = Math.floor(price * 100) / 100;
         return price;
-
-      } else{
-        return 0
+      } else {
+        return 0;
       }
     },
-    priceHour(){
-      if(this.start_hour&&this.end_hour&&this.postData.category_option_id){
-        let rangeDate = parseInt(this.end_hour)-parseInt(this.start_hour)+1;
+    priceHour() {
+      if (
+        this.start_hour &&
+        this.end_hour &&
+        this.postData.category_option_id
+      ) {
+        let rangeDate = parseInt(this.end_hour) - parseInt(this.start_hour) + 1;
         let formPrice = this.priceForm;
         let price = 0;
-        this.postData.category_option_id.forEach((item,i)=>{
-          price = price + formPrice[item]*rangeDate*20/100;
-        })
-        price = Math.floor(price*100)/100
+        this.postData.category_option_id.forEach((item, i) => {
+          price = price + formPrice[item] * rangeDate * 20 / 100;
+        });
+        price = Math.floor(price * 100) / 100;
         return price;
-
-      } else{
-        return 0
+      } else {
+        return 0;
       }
-      return 0
+      return 0;
     },
-    priceSite(){
-      if(this.start_hour&&this.end_hour&&this.postData.category_option_id){
+    priceSite() {
+      if (
+        this.start_hour &&
+        this.end_hour &&
+        this.postData.category_option_id
+      ) {
         // let rangeDate = parseInt(this.end_hour)-parseInt(this.start_hour)+1;
         let formPrice = this.priceForm;
         let price = 0;
-        this.postData.category_option_id.forEach((item,i)=>{
-          price = price + formPrice[item]*20/100;
-        })
-        price = Math.floor(price*100)/100
+        this.postData.category_option_id.forEach((item, i) => {
+          price = price + formPrice[item] * 20 / 100;
+        });
+        price = Math.floor(price * 100) / 100;
         return price;
-
-      } else{
-        return 0
+      } else {
+        return 0;
       }
-      return 0
+      return 0;
     },
-    modeUnit(){
-      if(this.chargingMode == 1){
-        return '天'
-      // } else if(this.chargingMode == 2){
-      } else if(this.chargingMode == 2){
-        return '小时'
-      } else{
-        return '场'
+    modeUnit() {
+      if (this.chargingMode == 1) {
+        return "天";
+        // } else if(this.chargingMode == 2){
+      } else if (this.chargingMode == 2) {
+        return "小时";
+      } else {
+        return "场";
       }
     }
   },
   methods: {
-    sureOrder(e){
+    sureOrder(e) {
       // let mode = this.chargingMode;
       let mode = this.chargingMode;
       let postData = this.postData;
-      postData.tid = this.id
-      if(mode == 2 || mode == 3){
-        postData.start_time = this.dateHour+' '+this.start_hour;
-        postData.end_time = this.dateHour+' '+this.end_hour;
+      postData.tid = this.id;
+      if (mode == 2 || mode == 3) {
+        postData.start_time = this.dateHour + " " + this.start_hour;
+        postData.end_time = this.dateHour + " " + this.end_hour;
       }
-      if(mode==1 && (postData.start_time=='' || postData.end_time=='')){
-        this.$util.showToast('请选择预约时间');
-        return
+      if (mode == 1 && (postData.start_time == "" || postData.end_time == "")) {
+        this.$util.showToast("请选择预约时间");
+        return;
       }
-      if((mode == 2 || mode == 3) && (this.start_hour=='' || this.end_hour=='')){
-        this.$util.showToast('请选择预约时间');
-        return
+      if (
+        (mode == 2 || mode == 3) &&
+        (this.start_hour == "" || this.end_hour == "")
+      ) {
+        this.$util.showToast("请选择预约时间");
+        return;
       }
-      if(mode == 3){
-        if(!((this.start_hour == '08:00' && this.end_hour == '12:00') || (this.start_hour == '14:00' && this.end_hour == '18:00'))){
-           this.$util.showToast("该预约只支持08:00-12:00与14:00-18:00两个时间段");
-           return
+      if (mode == 3) {
+        let s_time = parseInt(this.start_hour);
+        let e_time = parseInt(this.end_hour);
+        if ((s_time <= 13 && e_time >= 13)) {
+          this.$util.showToast("该预约只支持上午（08:00-12:00）或者下午（14:00-18:00）时段");
+          return;
         }
       }
-      if(postData.category_option_id.length==0){
-        this.$util.showToast('请选择预约项');
-        return
+      if (postData.category_option_id.length == 0) {
+        this.$util.showToast("请选择预约项");
+        return;
       }
-      if(!postData.name){
-        this.$util.showToast('请输入真实姓名');
-        return
+      if (!postData.name) {
+        this.$util.showToast("请输入真实姓名");
+        return;
       }
-      if(!postData.department){
-        this.$util.showToast('请输入部门/单位');
-        return
+      if (!postData.department) {
+        this.$util.showToast("请输入部门/单位");
+        return;
       }
-      if(!postData.phone){
-        this.$util.showToast('请输入手机号');
-        return
-      } else{
-        if(!this.$util.isPhone(postData.phone)){
-          this.$util.showToast('请输入正确的手机号');
-          return
+      if (!postData.phone) {
+        this.$util.showToast("请输入手机号");
+        return;
+      } else {
+        if (!this.$util.isPhone(postData.phone)) {
+          this.$util.showToast("请输入正确的手机号");
+          return;
         }
       }
       // if(!postData.code){
@@ -260,21 +306,23 @@ export default {
       //支付
       let url = this.$api.pay;
       let self = this;
-      self.$http({
-        loading:true,
-        url,
-        method:'POST',
-        data:postData
-      }).then(res=>{
-          if(res.length == 0){
-              self.$util.showToast('支付成功','success')
-              setTimeout(function(){
-                wx.navigateTo({
-                  url:'/pages/person/orderList/main?status=2'
-                })
-              },500)
+      self
+        .$http({
+          loading: true,
+          url,
+          method: "POST",
+          data: postData
+        })
+        .then(res => {
+          if (res.length == 0) {
+            self.$util.showToast("支付成功", "success");
+            setTimeout(function() {
+              wx.navigateTo({
+                url: "/pages/person/orderList/main?status=2"
+              });
+            }, 500);
 
-              return
+            return;
           }
           wx.requestPayment({
             timeStamp: res.timestamp,
@@ -282,88 +330,102 @@ export default {
             package: res.package,
             signType: res.signType,
             paySign: res.paySign,
-            success(res) { 
-              self.$util.showToast('支付成功','success')
-              self.captcha = '获取验证码'
-              clearInterval(self.interval)
-              setTimeout(function(){
+            success(res) {
+              self.$util.showToast("支付成功", "success");
+              self.captcha = "获取验证码";
+              clearInterval(self.interval);
+              setTimeout(function() {
                 wx.navigateTo({
-                  url:'/pages/person/orderList/main?status=2'
-                })
-              },500)
-              
+                  url: "/pages/person/orderList/main?status=2"
+                });
+              }, 500);
             },
-            fail(err) { 
-              self.$util.showToast('取消支付')
-              setTimeout(function(){
+            fail(err) {
+              self.$util.showToast("取消支付");
+              setTimeout(function() {
                 wx.navigateTo({
-                  url:'/pages/person/orderList/main?status=1'
-                })
-              },500)
-              console.log('err',err)
+                  url: "/pages/person/orderList/main?status=1"
+                });
+              }, 500);
+              console.log("err", err);
             }
-          })
-      })
-      
+          });
+        });
+
       // let data = await this.$http({url:url,method:'POST'}).then((data)=>{return data})
     },
     // 初始化按小时收费时间限制
-    initHourFun(){
+    initHourFun() {
       let dateValStart = new Date();
       let dateValEnd = new Date();
-      dateValStart.setTime(dateValStart.getTime()+24*60*60*1000);
-      dateValEnd.setTime(dateValEnd.getTime()+24*60*60*1000*90);
+      dateValStart.setTime(dateValStart.getTime() + 24 * 60 * 60 * 1000);
+      dateValEnd.setTime(dateValEnd.getTime() + 24 * 60 * 60 * 1000 * 90);
       dateValStart = this.$util.formatDate(dateValStart);
       dateValEnd = this.$util.formatDate(dateValEnd);
       this.dateHour = dateValStart;
-      this.start_limit = dateValStart.split('-');
-      this.end_limit = dateValEnd.split('-');
-      this.markHourOrder(dateValStart)
-      console.log(1111,this.start_limit,this.end_limit,dateValStart);
+      this.start_limit = dateValStart.split("-");
+      this.end_limit = dateValEnd.split("-");
+      this.markHourOrder(dateValStart);
+      console.log(1111, this.start_limit, this.end_limit, dateValStart);
     },
-    markHourOrder(date){
+    markHourOrder(date) {
       let self = this;
-      let hourArray=['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00'];
+      let hourArray = [
+        "08:00",
+        "09:00",
+        "10:00",
+        "11:00",
+        "12:00",
+        "13:00",
+        "14:00",
+        "15:00",
+        "16:00",
+        "17:00",
+        "18:00"
+      ];
       let orderHour = this.hourOrdered;
       let date_hours = [];
-      for(let i = 0 ;i<orderHour.length;i++){
-        if(orderHour[i].date == date){
+      for (let i = 0; i < orderHour.length; i++) {
+        if (orderHour[i].date == date) {
           date_hours = orderHour[i].hours;
           self.hourOrderedArr = orderHour[i].hours;
           break;
-        } else{
+        } else {
           date_hours = [];
           self.hourOrderedArr = [];
         }
       }
-    
-      if(date_hours.length>0){
-        date_hours.forEach((item_order,i)=>{
-          for (let j = 0;j<hourArray.length; j++) {
-            if(item_order == hourArray[j]){
-              hourArray[j] = hourArray[j]+'（已预约）'
+
+      if (date_hours.length > 0) {
+        date_hours.forEach((item_order, i) => {
+          for (let j = 0; j < hourArray.length; j++) {
+            if (item_order == hourArray[j]) {
+              hourArray[j] = hourArray[j] + "（已预约）";
               break;
             }
           }
-        
-        })
-        
-      } 
+        });
+      }
       this.hourArray = hourArray;
     },
     // 支付接口
-    countPrice(start_time,end_time){
-      let rangeDate = (this.getStamp(end_time) - this.getStamp(start_time))/(24*60*60*1000)+1;
-      return rangeDate ;
+    countPrice(start_time, end_time) {
+      let rangeDate =
+        (this.getStamp(end_time) - this.getStamp(start_time)) /
+          (24 * 60 * 60 * 1000) +
+        1;
+      return rangeDate;
     },
     // 记录选中消费项目及计算支付金额
-    checkboxChange(e){
+    checkboxChange(e) {
       this.postData.category_option_id = e.mp.detail.value;
     },
-    async reserveOption(tid){
+    async reserveOption(tid) {
       let url = `${this.$api.reserveOption}?tid=${tid}`;
       let self = this;
-      let data = await this.$http({url:url,loading:true}).then((data)=>{return data})
+      let data = await this.$http({ url: url, loading: true }).then(data => {
+        return data;
+      });
       this.id = data.id;
       this.chargingMode = data.charging_mode;
       // this.chargingMode = 3;
@@ -372,32 +434,36 @@ export default {
       //   self.initHourFun();
       // }
       let priceForm = {};
-      for(let i = 0;i<data.children.length;i++){
-        priceForm[data.children[i].id] = data.children[i].rent_price
+      for (let i = 0; i < data.children.length; i++) {
+        priceForm[data.children[i].id] = data.children[i].rent_price;
       }
       this.priceForm = priceForm;
       //为了保证数据能获取到
       this.getReserveTime(this.id);
-      this.isRender = true
-      console.log(data.charging_mode,priceForm);
-      
+      this.isRender = true;
+      console.log(data.charging_mode, priceForm);
     },
     //获得已预约时间
-    async getReserveTime(tid){
+    async getReserveTime(tid) {
       let url = `${this.$api.showReserveTime}`;
       let self = this;
-      let data = await this.$http({loading:true,url:url,data:{tid},method:'POST'}).then((data)=>{return data})
-      if(data){
-        if(this.chargingMode == '1'){
+      let data = await this.$http({
+        loading: true,
+        url: url,
+        data: { tid },
+        method: "POST"
+      }).then(data => {
+        return data;
+      });
+      if (data) {
+        if (this.chargingMode == "1") {
           this.dateOrdered = data;
           this.disabledarr = data;
-        } else{
+        } else {
           this.hourOrdered = data;
           self.initHourFun();
         }
-        
       }
-      
     },
     // 选中日期
     select(val, val2) {
@@ -405,244 +471,235 @@ export default {
       let orderedArr = this.dateOrdered;
       let timeFlag = this.timeFlag;
       let postData = this.postData;
-      val[1] = val[1]>9?val[1]:'0'+val[1];
-      val[2] = val[2]>9?val[2]:'0'+val[2];
-      let select_date = val.join('-');
-      if(orderedArr.indexOf(select_date)>-1){
-        this.$util.showToast('抱歉，此日期已被预约')
+      val[1] = val[1] > 9 ? val[1] : "0" + val[1];
+      val[2] = val[2] > 9 ? val[2] : "0" + val[2];
+      let select_date = val.join("-");
+      if (orderedArr.indexOf(select_date) > -1) {
+        this.$util.showToast("抱歉，此日期已被预约");
         console.log(orderedArr.indexOf(select_date));
         return;
       }
-      if(orderedArr.length>0){
-        if((timeFlag == '1'&& postData.end_time)||(timeFlag == '2'&& postData.start_time)){
-          if(timeFlag == '1'){
-            var timeStampStart = this.getStamp(select_date)
-            var timeStampEnd = this.getStamp(postData.end_time)
-          } else{
-            var timeStampStart = this.getStamp(postData.start_time)
-            var timeStampEnd = this.getStamp(select_date)
+      if (orderedArr.length > 0) {
+        if (
+          (timeFlag == "1" && postData.end_time) ||
+          (timeFlag == "2" && postData.start_time)
+        ) {
+          if (timeFlag == "1") {
+            var timeStampStart = this.getStamp(select_date);
+            var timeStampEnd = this.getStamp(postData.end_time);
+          } else {
+            var timeStampStart = this.getStamp(postData.start_time);
+            var timeStampEnd = this.getStamp(select_date);
           }
-          
-          for(let i=0;i<orderedArr.length;i++){
-            let itemStamp = this.getStamp(orderedArr[i])
-            if(itemStamp>timeStampStart && itemStamp<timeStampEnd){
+
+          for (let i = 0; i < orderedArr.length; i++) {
+            let itemStamp = this.getStamp(orderedArr[i]);
+            if (itemStamp > timeStampStart && itemStamp < timeStampEnd) {
               isOk = false;
               break;
             }
           }
         }
-        
       }
-      if(isOk){
-        if(this.timeFlag == '1'){
+      if (isOk) {
+        if (this.timeFlag == "1") {
           this.postData.start_time = select_date;
-        } else{
+        } else {
           this.postData.end_time = select_date;
         }
-      } else{
-        this.$util.showToast('你选择的时间范围内有被预约的日期，请重新选择');
-        this.postData.start_time = '';
-        this.postData.end_time = '';
+      } else {
+        this.$util.showToast("你选择的时间范围内有被预约的日期，请重新选择");
+        this.postData.start_time = "";
+        this.postData.end_time = "";
       }
       this.showCalendar = false;
-      
     },
     //获取时间戳
-    getStamp(val){
+    getStamp(val) {
       return new Date(val).getTime();
     },
     //展示日历
-    showCalendarEvent(val){
+    showCalendarEvent(val) {
       this.showCalendar = true;
       this.timeFlag = val;
       this.timeLimit(val);
-
     },
     //展示日历--hour
-    showCalendarHour(){
+    showCalendarHour() {
       this.showCalendarH = true;
     },
     // 限制日历的所选日期下限
-    timeLimit(val){
+    timeLimit(val) {
       var valueB = [];
       var valueE = [];
-      if(val == '2' && this.postData.start_time){
-        var _begin = new Date(this.postData.start_time)
-      } else{
-        var _begin = new Date;
-        _begin.setTime(_begin.getTime()+24*60*60*1000);
+      if (val == "2" && this.postData.start_time) {
+        var _begin = new Date(this.postData.start_time);
+      } else {
+        var _begin = new Date();
+        _begin.setTime(_begin.getTime() + 24 * 60 * 60 * 1000);
       }
-      if(val == '1' && this.postData.end_time){
+      if (val == "1" && this.postData.end_time) {
         var _end = new Date(this.postData.end_time);
         // _end.setTime(_end.getTime()+24*60*60*1000);
-       
-      } else{
-        var _end = new Date;
-        _end.setTime(_end.getTime()+24*60*60*1000*60);
+      } else {
+        var _end = new Date();
+        _end.setTime(_end.getTime() + 24 * 60 * 60 * 1000 * 60);
       }
-      valueB.push(_begin.getFullYear())
-      valueB.push(_begin.getMonth()+1)
-      valueB.push(_begin.getDate())
+      valueB.push(_begin.getFullYear());
+      valueB.push(_begin.getMonth() + 1);
+      valueB.push(_begin.getDate());
       this.value = valueB;
       this.begin = valueB;
 
-      valueE.push(_end.getFullYear())
-      valueE.push(_end.getMonth()+1)
-      valueE.push(_end.getDate())
+      valueE.push(_end.getFullYear());
+      valueE.push(_end.getMonth() + 1);
+      valueE.push(_end.getDate());
       this.end = valueE;
-      console.log(this.begin,this.end,val,);
-
+      console.log(this.begin, this.end, val);
     },
     // 发送短信验证
-    sendCode(){
+    sendCode() {
       console.log(this.postData);
       let tel = this.postData.phone;
       let self = this;
       let url = this.$api.sms;
       console.log(tel);
-      if(!this.$util.isPhone(tel)){
-         this.$util.showToast('手机格式不正确')
-         return;
+      if (!this.$util.isPhone(tel)) {
+        this.$util.showToast("手机格式不正确");
+        return;
       }
       this.$http({
-        loading:true,
+        loading: true,
         url,
-        data:{phone:tel}
-      }).then((res)=>{
+        data: { phone: tel }
+      }).then(res => {
         let time = 120;
         self.interval = setInterval(() => {
-            if (--time > 0) {
-               this.captcha =  `重新发送(${time})`
-               this.disable = true;
-            } else {
-                clearInterval(self.interval)
-                this.captcha = '获取验证码'
-                this.disable = false;
-          
-            }
-        }, 1000)
-      })
+          if (--time > 0) {
+            this.captcha = `重新发送(${time})`;
+            this.disable = true;
+          } else {
+            clearInterval(self.interval);
+            this.captcha = "获取验证码";
+            this.disable = false;
+          }
+        }, 1000);
+      });
     },
-    bindDateChange(e){
+    bindDateChange(e) {
       this.dateHour = e.mp.detail.value;
-      this.markHourOrder(e.mp.detail.value)
-      this.start_hour = '';
-      this.end_hour = '';
-
+      this.markHourOrder(e.mp.detail.value);
+      this.start_hour = "";
+      this.end_hour = "";
     },
-    selectHour(val,val2){
-      val[1] = val[1]>9?val[1]:'0'+val[1];
-      val[2] = val[2]>9?val[2]:'0'+val[2];
-      let select_date = val.join('-');
+    selectHour(val, val2) {
+      val[1] = val[1] > 9 ? val[1] : "0" + val[1];
+      val[2] = val[2] > 9 ? val[2] : "0" + val[2];
+      let select_date = val.join("-");
       this.dateHour = select_date;
-      this.markHourOrder(select_date)
-      this.start_hour = '';
-      this.end_hour = '';
+      this.markHourOrder(select_date);
+      this.start_hour = "";
+      this.end_hour = "";
       this.showCalendarH = false;
-
     },
-    bindStartChange(e){
+    bindStartChange(e) {
       let _index = e.mp.detail.value;
-      let val = this.hourArray[_index]
-      console.log(val,333);
-      this.bindHourChange(1,val)
-    }
-    ,
-    bindEndChange(e){
+      let val = this.hourArray[_index];
+      console.log(val, 333);
+      this.bindHourChange(1, val);
+    },
+    bindEndChange(e) {
       let _index = e.mp.detail.value;
-      let val = this.hourArray[_index]
-      this.bindHourChange(2,val);
-    }
-    ,
-    bindHourChange(flag,val){//1-start,2--end
-      console.log(flag,val);
-      if(val.indexOf('已预约')>-1){
-        console.log(val.indexOf('已预约'));
-        this.$util.showToast('已预约的时间不可选')
+      let val = this.hourArray[_index];
+      this.bindHourChange(2, val);
+    },
+    bindHourChange(flag, val) {
+      //1-start,2--end
+      console.log(flag, val);
+      if (val.indexOf("已预约") > -1) {
+        console.log(val.indexOf("已预约"));
+        this.$util.showToast("已预约的时间不可选");
         return;
       }
       let hourOrderedArr = this.hourOrderedArr;
       let isOk = true;
-      function compareTime(sHour,eHour) {
-        let s_hour = parseInt(sHour)
-        let e_hour = parseInt(eHour)
-        console.log(sHour,eHour,s_hour,e_hour,'compareTime');
-        if(s_hour<=e_hour){
-          return true
-        } else{
-          return false
+      function compareTime(sHour, eHour) {
+        let s_hour = parseInt(sHour);
+        let e_hour = parseInt(eHour);
+        console.log(sHour, eHour, s_hour, e_hour, "compareTime");
+        if (s_hour < e_hour) {
+          return true;
+        } else {
+          return false;
         }
       }
       //所选时间是否包含已选时间
-      function isHas(sHour,eHour) {
-        if(hourOrderedArr.length == 0){
-          return
+      function isHas(sHour, eHour) {
+        if (hourOrderedArr.length == 0) {
+          return;
         }
-        let s_hour = parseInt(sHour)
-        let e_hour = parseInt(eHour)
-        console.log(sHour,eHour,s_hour,e_hour,'isHas',hourOrderedArr);
-        for(let i = 0;i<hourOrderedArr.length;i++){
-          let num_hour = parseInt(hourOrderedArr[i])
-          console.log(i,num_hour,4444);
-          if(num_hour<e_hour && num_hour>s_hour){
-            console.log(i,num_hour);
+        let s_hour = parseInt(sHour);
+        let e_hour = parseInt(eHour);
+        console.log(sHour, eHour, s_hour, e_hour, "isHas", hourOrderedArr);
+        for (let i = 0; i < hourOrderedArr.length; i++) {
+          let num_hour = parseInt(hourOrderedArr[i]);
+          console.log(i, num_hour, 4444);
+          if (num_hour < e_hour && num_hour > s_hour) {
+            console.log(i, num_hour);
             isOk = false;
             break;
           }
         }
       }
-      if(flag==1 && this.end_hour){
-        if(compareTime(val,this.end_hour)){
-          isHas(val,this.end_hour);
-          if(isOk){
+      if (flag == 1 && this.end_hour) {
+        if (compareTime(val, this.end_hour)) {
+          isHas(val, this.end_hour);
+          if (isOk) {
             this.start_hour = val;
-          } else{
-            this.start_hour = ''
-            this.end_hour = ''
-            this.$util.showToast('所选时间包含已选时间,请重新选择')
+          } else {
+            this.start_hour = "";
+            this.end_hour = "";
+            this.$util.showToast("所选时间包含已选时间,请重新选择");
           }
-        }else{
-          this.start_hour = ''
-          this.end_hour = ''
-          this.$util.showToast('开始时间不能大于结束时间')
+        } else {
+          this.start_hour = "";
+          this.end_hour = "";
+          this.$util.showToast("开始时间不能大于结束时间");
         }
       }
-      if(flag==2 && this.start_hour){
-        isHas(this.start_hour,val);
-        if(compareTime(this.start_hour,val)){
-          if(isOk){
+      if (flag == 2 && this.start_hour) {
+        isHas(this.start_hour, val);
+        if (compareTime(this.start_hour, val)) {
+          if (isOk) {
             this.end_hour = val;
-          } else{
-            this.$util.showToast('所选时间包含已选时间,请重新选择')
-            this.start_hour = ''
-            this.end_hour = ''
+          } else {
+            this.$util.showToast("所选时间包含已选时间,请重新选择");
+            this.start_hour = "";
+            this.end_hour = "";
           }
-        }else{
-          this.start_hour = ''
-          this.end_hour = ''
-          this.$util.showToast('开始时间不能大于结束时间')
+        } else {
+          this.start_hour = "";
+          this.end_hour = "";
+          this.$util.showToast("开始时间不能大于结束时间");
         }
       }
-      if(flag == 1 && isOk){
+      if (flag == 1 && isOk) {
         this.start_hour = val;
       }
-      if(flag == 2 && isOk){
+      if (flag == 2 && isOk) {
         this.end_hour = val;
       }
-      
     },
     // 显示退款规则
-    refundEvent(){
+    refundEvent() {
       wx.navigateTo({
-        url:'/pages/person/about/main?id=2'
-      })
+        url: "/pages/person/about/main?id=2"
+      });
     }
-
-
-  },
-}
+  }
+};
 </script>
 
 <style scoped lang = 'less'>
-  @import url('./style');
+@import url("./style");
 </style>
