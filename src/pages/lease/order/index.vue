@@ -41,8 +41,8 @@
          <input placeholder="请输入真实姓名" name='name' v-model = 'postData.name' />
          <input placeholder="单位/部门" name='name' v-model = 'postData.department' />
          <input type = 'number' placeholder="请输入手机号" name='phone' maxlength='11' v-model = 'postData.phone'/>
-         <input type = 'number' placeholder="请输入验证码" name='code' class="code" v-model = 'postData.code' />
-         <button @click="sendCode" :disabled = "disable" class="btn_code">{{captcha}}</button>
+         <!-- <input type = 'number' placeholder="请输入验证码" name='code' class="code" v-model = 'postData.code' /> -->
+         <!-- <button @click="sendCode" :disabled = "disable" class="btn_code">{{captcha}}</button> -->
          <h2 v-if='chargingMode == 1'>本次您需支付定金：{{priceDate}}元</h2>
          <h2 v-else>本次您需支付定金：{{priceHour}}元</h2>
          <h5 @click='refundEvent'>退款规则</h5>
@@ -219,10 +219,10 @@ export default {
           return
         }
       }
-      if(!postData.code){
-        this.$util.showToast('请输入短信验证码');
-        return
-      }
+      // if(!postData.code){
+      //   this.$util.showToast('请输入短信验证码');
+      //   return
+      // }
       //支付
       let url = this.$api.pay;
       let self = this;
