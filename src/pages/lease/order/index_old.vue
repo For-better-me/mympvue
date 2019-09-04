@@ -25,13 +25,12 @@
               <input disabled  placeholder="结束时间" v-model = 'end_hour' class="hour" />
             </picker>
         </div>
-        <p v-if="chargingMode==3" style="font-size:12px;color:#999;margin-top:8px;">温馨提示：该预约只支持08:00-12:00与14:00-18:00两个时间段</p>
       </div>
       <div class="site shadow_wrap order_sub">
         <h4 style="margin-bottom: 0.15rem">服务项目</h4>
         <checkbox-group @change="checkboxChange" name="checkgo">
           <label class="checkbox" v-for="(item,index) in siteCheckbox" :key = "index">
-            <p>{{item.title}}<span v-if='item.rent_price>0'>{{item.rent_price}}元/{{modeUnit}}</span></p>
+            <p>{{item.title}}<span v-if='item.rent_price>0'>{{item.rent_price}}元/{{chargingMode=='1'?'天':'小时'}}</span></p>
             <checkbox :value="item.id" />
           </label>
         </checkbox-group>
@@ -45,8 +44,7 @@
          <!-- <input type = 'number' placeholder="请输入验证码" name='code' class="code" v-model = 'postData.code' /> -->
          <!-- <button @click="sendCode" :disabled = "disable" class="btn_code">{{captcha}}</button> -->
          <h2 v-if='chargingMode == 1'>本次您需支付定金：{{priceDate}}元</h2>
-         <h2 v-else-if='chargingMode == 2'>本次您需支付定金：{{priceHour}}元</h2>
-         <h2 v-else>本次您需支付定金：{{priceSite}}元</h2>
+         <h2 v-else>本次您需支付定金：{{priceHour}}元</h2>
          <h5 @click='refundEvent'>退款规则</h5>
          <button form-type = "submit" class="btn_pay">支付</button>
       </div>
@@ -180,57 +178,25 @@ export default {
         return 0
       }
       return 0
-    },
-    priceSite(){
-      if(this.start_hour&&this.end_hour&&this.postData.category_option_id){
-        // let rangeDate = parseInt(this.end_hour)-parseInt(this.start_hour)+1;
-        let formPrice = this.priceForm;
-        let price = 0;
-        this.postData.category_option_id.forEach((item,i)=>{
-          price = price + formPrice[item]*20/100;
-        })
-        price = Math.floor(price*100)/100
-        return price;
-
-      } else{
-        return 0
-      }
-      return 0
-    },
-    modeUnit(){
-      if(this.chargingMode == 1){
-        return '天'
-      // } else if(this.chargingMode == 2){
-      } else if(this.chargingMode == 2){
-        return '小时'
-      } else{
-        return '场'
-      }
     }
   },
   methods: {
     sureOrder(e){
-      // let mode = this.chargingMode;
       let mode = this.chargingMode;
       let postData = this.postData;
       postData.tid = this.id
-      if(mode == 2 || mode == 3){
+      if(mode == 2){
         postData.start_time = this.dateHour+' '+this.start_hour;
         postData.end_time = this.dateHour+' '+this.end_hour;
       }
+      console.log(1111,postData);
       if(mode==1 && (postData.start_time=='' || postData.end_time=='')){
         this.$util.showToast('请选择预约时间');
         return
       }
-      if((mode == 2 || mode == 3) && (this.start_hour=='' || this.end_hour=='')){
+      if(mode==2 && (this.start_hour=='' || this.end_hour=='')){
         this.$util.showToast('请选择预约时间');
         return
-      }
-      if(mode == 3){
-        if(!((this.start_hour == '08:00' && this.end_hour == '12:00') || (this.start_hour == '14:00' && this.end_hour == '18:00'))){
-           this.$util.showToast("该预约只支持08:00-12:00与14:00-18:00两个时间段");
-           return
-        }
       }
       if(postData.category_option_id.length==0){
         this.$util.showToast('请选择预约项');
@@ -312,7 +278,7 @@ export default {
       let dateValStart = new Date();
       let dateValEnd = new Date();
       dateValStart.setTime(dateValStart.getTime()+24*60*60*1000);
-      dateValEnd.setTime(dateValEnd.getTime()+24*60*60*1000*90);
+      dateValEnd.setTime(dateValEnd.getTime()+24*60*60*1000*60);
       dateValStart = this.$util.formatDate(dateValStart);
       dateValEnd = this.$util.formatDate(dateValEnd);
       this.dateHour = dateValStart;
@@ -366,7 +332,6 @@ export default {
       let data = await this.$http({url:url,loading:true}).then((data)=>{return data})
       this.id = data.id;
       this.chargingMode = data.charging_mode;
-      // this.chargingMode = 3;
       this.siteCheckbox = data.children;
       // if(data.charging_mode == '2'){
       //   self.initHourFun();
