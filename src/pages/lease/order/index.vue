@@ -206,7 +206,7 @@ export default {
         this.end_hour &&
         this.postData.category_option_id
       ) {
-        let rangeDate = parseInt(this.end_hour) - parseInt(this.start_hour) + 1;
+        let rangeDate = parseInt(this.end_hour) - parseInt(this.start_hour);
         let formPrice = this.priceForm;
         let price = 0;
         this.postData.category_option_id.forEach((item, i) => {
