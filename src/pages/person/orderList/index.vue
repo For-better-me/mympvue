@@ -64,7 +64,7 @@ export default {
       let self = this;
       let url = `${this.$api.reserveList}?status=${status}&page=${currentPage}`;
       let token = wx.getStorageSync('token');
-      let orderList = [];
+      let orderList = self.orderList ? self.orderList:[]
       self.$http({
         loading:true,
         url:url

@@ -49,6 +49,7 @@
             <p>
               {{item.title}}
               <span v-if="item.rent_price>0">{{item.rent_price}}元/{{modeUnit}}</span>
+              <span v-if="item.rent_price == 0 && item.title != '面议'">单独议价</span>
             </p>
             <checkbox :value="item.id" />
           </label>
@@ -317,7 +318,7 @@ export default {
           if (res.length == 0) {
             self.$util.showToast("支付成功", "success");
             setTimeout(function() {
-              wx.navigateTo({
+              wx.redirectTo({
                 url: "/pages/person/orderList/main?status=2"
               });
             }, 500);
@@ -335,7 +336,7 @@ export default {
               self.captcha = "获取验证码";
               clearInterval(self.interval);
               setTimeout(function() {
-                wx.navigateTo({
+                wx.redirectTo({
                   url: "/pages/person/orderList/main?status=2"
                 });
               }, 500);
@@ -343,7 +344,7 @@ export default {
             fail(err) {
               self.$util.showToast("取消支付");
               setTimeout(function() {
-                wx.navigateTo({
+                wx.redirectTo({
                   url: "/pages/person/orderList/main?status=1"
                 });
               }, 500);
