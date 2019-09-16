@@ -95,6 +95,9 @@ export default {
     },
    
   },
+  onShareAppMessage(){
+     return this.$util.shareEvent()
+  }
   
 
   

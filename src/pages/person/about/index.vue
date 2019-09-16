@@ -47,6 +47,9 @@ export default {
       this.aboutInfo = aboutInfo;
     }
   },
+  onShareAppMessage(){
+     return this.$util.shareEvent()
+  }
 }
 </script>
 

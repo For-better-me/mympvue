@@ -48,6 +48,9 @@ export default {
 
   created () {
    
+  },
+  onShareAppMessage(){
+     return this.$util.shareEvent('租赁预约','/pages/lease/main')
   }
 }
 </script>

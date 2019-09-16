@@ -139,6 +139,9 @@ export default {
 
   created () {
    
+  },
+  onShareAppMessage(){
+     return this.$util.shareEvent()
   }
 }
 </script>

@@ -42,10 +42,18 @@ function isPhone(tel) {
   }
 }
 
+function shareEvent(title='新华媒体创意工场',path='/pages/index/main') {
+   return {
+      title:title,
+      path:path
+    }
+}
+
 export default {
   formatNumber,
   formatTime,
   showToast,
   isPhone,
-  formatDate
+  formatDate,
+  shareEvent
 }

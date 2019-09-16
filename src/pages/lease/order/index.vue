@@ -697,6 +697,9 @@ export default {
         url: "/pages/person/about/main?id=2"
       });
     }
+  },
+  onShareAppMessage(){
+     return this.$util.shareEvent()
   }
 };
 </script>

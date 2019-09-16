@@ -44,6 +44,9 @@ export default {
       this.briefInfo = briefInfo;
     }
   },
+  onShareAppMessage(){
+     return this.$util.shareEvent()
+  }
   
 }
 </script>
